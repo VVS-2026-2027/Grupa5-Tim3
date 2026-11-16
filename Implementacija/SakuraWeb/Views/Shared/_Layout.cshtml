@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sakura</title>
+    <script type="importmap"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@200..700&family=Wittgenstein:ital,wght@0,400..900;1,400..900&display=swap">
+
+    <link rel="stylesheet" href="~/css/site.css"  />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    @if (User.IsInRole("Administrator"))
+    {
+    <style>
+        body {
+            background-image: url('/img/adminbg.png');
+            background-size: cover;
+            background-position: top 50px;
+            background-attachment: fixed;
+        }
+    </style>        
+    }
+</head>
+<body>
+    @if (User.IsInRole("Administrator"))
+    {
+    <div class="header" style="background-color: white;">
+        <img class="" src="/img/AdminHeader.svg" />
+    </div>
+    } else
+    {
+    <div class="header">
+        <img class="" src="/img/Header.svg" />
+    </div>
+    
+    string ActiveClass(string link)
+    {
+        var current = ViewContext.HttpContext.Request.Path.Value ?? string.Empty;
+        var target = link ?? string.Empty;
+        if (string.IsNullOrEmpty(target)) return "sakura-lightgray";
+        // Ensure a leading / so comparisons are consistent
+        if (!target.StartsWith('/'))
+        {
+            target = Url.Content(target);
+        }
+        if (target == "/")
+        {
+            return current == "/" ? "sakura-btn-active" : "sakura-lightgray";
+        }
+        if (current.Equals(target, System.StringComparison.OrdinalIgnoreCase) || current.StartsWith(target + "/", System.StringComparison.OrdinalIgnoreCase))
+        {
+            return "sakura-btn-active";
+        }
+        return "sakura-lightgray";
+    }
+    
+    <div class="navbar navbar-expand">
+        <div class="container-fluid d-flex justify-content-between">
+            <!-- LEFT -->
+            <div class="d-flex gap-2">
+                <a class="nav-link @(ActiveClass(Url.Action("Index","Home")))" asp-controller="Home" asp-action="Index">Početna</a>
+                <a class="nav-link @(ActiveClass(Url.Action("Index","Proizvodi")))" asp-controller="Proizvodi" asp-action="Index">Proizvodi</a>
+                <a class="nav-link @(ActiveClass(Url.Action("Index","Usluga")))" asp-controller="Usluga" asp-action="Index">Usluge</a>
+                <a class="nav-link @(ActiveClass(Url.Action("Index","Anketa")))" asp-controller="Anketa" asp-action="Index">Anketa</a>
+            </div>
+
+            <!-- RIGHT -->
+            <partial name="_LoginPartial"></partial>
+
+        </div>
+    </div>
+    }
+        
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+    
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

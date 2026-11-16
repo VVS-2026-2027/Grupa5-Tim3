@@ -1,0 +1,46 @@
+﻿@model SakuraWeb.Models.Korisnik
+
+@{
+    ViewData["Title"] = "Registracija uposlenika";
+}
+
+<partial name="_AdminNavPartial"></partial>
+
+<div class="container mt-4">
+
+    <div class="text-center">
+        <h1 class="text-center stack-sans-headline-h1">Registracija uposlenika</h1>
+    </div>
+    <form asp-action="Create">
+        <div style="max-width:40%; font-size: 20px!important;" class="wittgenstein">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <p>Email:</p>
+            <p>
+                <input asp-for="emailAdresa" type="email" class="form-control mb-3" placeholder="Email adresa...">
+                <span asp-validation-for="emailAdresa" class="text-danger"></span>
+            </p>
+
+            <p>Korisničko ime:</p>
+            <p>
+                <input asp-for="korisnickoIme" type="text" class="form-control mb-3" placeholder="Korisničko ime...">
+                <span asp-validation-for="korisnickoIme" class="text-danger"></span>
+            </p>
+
+            <p>Lozinka:</p>
+            <p>
+                <input asp-for="lozinka" type="password" class="form-control mb-3" placeholder="Lozinka...">
+                <span asp-validation-for="lozinka" class="text-danger"></span>
+            </p>
+
+            <!-- Hidden field to set ulogaKorisnika to "Frizer" -->
+            <input type="hidden" asp-for="ulogaKorisnika" value="Frizer" />
+            <span asp-validation-for="ulogaKorisnika" class="text-danger"></span>
+        </div>
+        <input type="submit" value="Registruj" class="sakura-btn-coldpink" style="font-size: 18px!important;">
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
