@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Slucajevi registracije novog korisnika: koji podaci prolaze validaciju forme -->
+<slucajevi>
+  <slucaj>
+    <opis>Svi podaci ispravni</opis>
+    <email>novi@test.ba</email><lozinka>Lozinka1!</lozinka><potvrda>Lozinka1!</potvrda><validno>true</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Lozinka od tacno 6 znakova (donja granica)</opis>
+    <email>novi@test.ba</email><lozinka>abc123</lozinka><potvrda>abc123</potvrda><validno>true</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Lozinka od 5 znakova (ispod granice)</opis>
+    <email>novi@test.ba</email><lozinka>abc12</lozinka><potvrda>abc12</potvrda><validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Email bez znaka @</opis>
+    <email>novi.test.ba</email><lozinka>Lozinka1!</lozinka><potvrda>Lozinka1!</potvrda><validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Prazan email</opis>
+    <email></email><lozinka>Lozinka1!</lozinka><potvrda>Lozinka1!</potvrda><validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Prazna lozinka</opis>
+    <email>novi@test.ba</email><lozinka></lozinka><potvrda></potvrda><validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Potvrda lozinke se razlikuje</opis>
+    <email>novi@test.ba</email><lozinka>Lozinka1!</lozinka><potvrda>Lozinka2!</potvrda><validno>false</validno>
+  </slucaj>
+</slucajevi>
