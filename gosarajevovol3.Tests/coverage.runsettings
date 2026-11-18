@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<DataCollectionRunSettings>
+		<DataCollectors>
+			<DataCollector friendlyName="Code Coverage">
+				<Configuration>
+					<CodeCoverage>
+						<ModulePaths>
+							<Include>
+								<ModulePath>.*[\\/]gosarajevovol3\.dll$</ModulePath>
+							</Include>
+						</ModulePaths>
+						<Sources>
+							<Exclude>
+								<Source>.*[\\/]Migrations[\\/].*</Source>
+								<Source>.*[\\/]Views[\\/].*</Source>
+								<Source>.*\.cshtml$</Source>
+								<Source>.*[\\/]Program\.cs$</Source>
+							</Exclude>
+						</Sources>
+						<Functions>
+							<Exclude>
+								<Function>^AspNetCoreGeneratedDocument\..*</Function>
+								<Function>^gosarajevovol3\.Migrations\..*</Function>
+								<Function>^Program\..*</Function>
+							</Exclude>
+						</Functions>
+						<Attributes>
+							<Exclude>
+								<Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
+								<Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
+							</Exclude>
+						</Attributes>
+					</CodeCoverage>
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
+</RunSettings>
