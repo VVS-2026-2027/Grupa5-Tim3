@@ -1,0 +1,7 @@
+naslov;sadrzaj;ocekivanoBezGreske
+Novosti u julu;Dobrodosli na Sarajevo Film Festival;true
+null;Sadrzaj bez naslova;false
+Naslov bez sadrzaja;null;false
+;Prazan naslov;false
+Prazan sadrzaj;;false
+null;null;false

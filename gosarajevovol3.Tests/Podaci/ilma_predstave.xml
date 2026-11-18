@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sacuvani isjecci HTML stranica predstava sa nps.ba i podaci koje scraper treba izvuci -->
+<slucajevi>
+  <slucaj>
+    <opis>Drama sa slikom u link preload elementu i opisom u article elementu</opis>
+    <html><![CDATA[<html><head><link rel="preload" as="image" href="/storage/performance/hasanaginica.jpg"></head><body><h1>Drama Hasanaginica</h1><article><p>Klasik bosanskohercegovacke knjizevnosti.</p></article></body></html>]]></html>
+    <naziv>Hasanaginica</naziv>
+    <slika>https://nps.ba/storage/performance/hasanaginica.jpg</slika>
+    <opisPredstave>Klasik bosanskohercegovacke knjizevnosti.</opisPredstave>
+  </slucaj>
+  <slucaj>
+    <opis>Opera sa slikom u img elementu (relativna putanja bez kose crte)</opis>
+    <html><![CDATA[<html><body><h1>Opera Ero s onoga svijeta</h1><img src="storage/performance/ero.jpg"><main><p>Komicna opera u tri cina.</p></main></body></html>]]></html>
+    <naziv>Ero s onoga svijeta</naziv>
+    <slika>https://nps.ba/storage/performance/ero.jpg</slika>
+    <opisPredstave>Komicna opera u tri cina.</opisPredstave>
+  </slucaj>
+  <slucaj>
+    <opis>Balet sa slikom u meta og:image elementu (puna adresa)</opis>
+    <html><![CDATA[<html><head><meta property="og:image" content="https://cdn.nps.ba/labudje.jpg"></head><body><h1>Balet Labudje jezero</h1><div class="eft-content"><p>Balet u cetiri cina.</p><p>Muzika: Cajkovski.</p></div></body></html>]]></html>
+    <naziv>Labudje jezero</naziv>
+    <slika>https://cdn.nps.ba/labudje.jpg</slika>
+    <opisPredstave>Balet u cetiri cina. Muzika: Cajkovski.</opisPredstave>
+  </slucaj>
+  <slucaj>
+    <opis>Stranica bez naslova, slike i opisa</opis>
+    <html><![CDATA[<html><body><div>Sadrzaj u pripremi</div></body></html>]]></html>
+    <naziv>Unknown title</naziv>
+    <slika>No image</slika>
+    <opisPredstave>No description</opisPredstave>
+  </slucaj>
+  <slucaj>
+    <opis>Opis pored elementa learn_more, naziv sa HTML entitetom</opis>
+    <html><![CDATA[<html><body><h1>Drama Otac &amp; sin</h1><section><a id="learn_more">Vise</a><p>Porodicna drama.</p></section><article><p>Ovaj tekst se ne koristi.</p></article></body></html>]]></html>
+    <naziv>Otac &amp; sin</naziv>
+    <slika>No image</slika>
+    <opisPredstave>Porodicna drama.</opisPredstave>
+  </slucaj>
+</slucajevi>
