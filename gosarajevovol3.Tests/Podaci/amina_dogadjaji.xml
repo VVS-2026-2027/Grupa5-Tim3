@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slucajevi>
+    <slucaj>
+        <opis>Potpuna stranica koncerta</opis>
+        <html><![CDATA[<html><body><h1>Dino Merlin</h1><div class='image'><img src='/slike/merlin.jpg'></div><p>15/03</p><p>Zetra, Alipasina bb, Sarajevo</p><p class='MsoNormal'>Veliki koncert.</p></body></html>]]></html>
+        <naziv>Dino Merlin</naziv>
+        <adresa>Zetra, Alipasina bb</adresa>
+        <slika>https://www.kupikartu.ba/slike/merlin.jpg</slika>
+        <opisDogadjaja>Veliki koncert.</opisDogadjaja>
+    </slucaj>
+    <slucaj>
+        <opis>Naziv sa HTML entitetom i slika sa punom adresom</opis>
+        <html><![CDATA[<html><body><h1>Rock &amp; Roll vece</h1><div class='image'><img src='https://cdn.test/rock.png'></div><p>01/12</p><p>Dom mladih, Sarajevo</p></body></html>]]></html>
+        <naziv>Rock &amp; Roll vece</naziv>
+        <adresa>Dom mladih</adresa>
+        <slika>https://cdn.test/rock.png</slika>
+        <opisDogadjaja></opisDogadjaja>
+    </slucaj>
+    <slucaj>
+        <opis>Stranica bez naslova i bez slike</opis>
+        <html><![CDATA[<html><body><p>20/06</p><p>Bosanski kulturni centar,Sarajevo</p><p class='MsoNoSpacing'>Prvi red.</p><p class='MsoNormal'>Drugi red.</p></body></html>]]></html>
+        <naziv>Name Unknown</naziv>
+        <adresa>Bosanski kulturni centar</adresa>
+        <slika></slika>
+        <opisDogadjaja>Prvi red.
+            Drugi red.</opisDogadjaja>
+    </slucaj>
+    <slucaj>
+        <opis>Slika u rezervnom obliku (img sa klasom image)</opis>
+        <html><![CDATA[<html><body><h1>Predstava</h1><img class='image' src='/slike/predstava.jpg'><p>05/05</p><p>Kamerni teatar 55, SARAJEVO</p></body></html>]]></html>
+        <naziv>Predstava</naziv>
+        <adresa>Kamerni teatar 55</adresa>
+        <slika>https://www.kupikartu.ba/slike/predstava.jpg</slika>
+        <opisDogadjaja></opisDogadjaja>
+    </slucaj>
+</slucajevi>
