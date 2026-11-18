@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
-using SendGrid; 
-using SendGrid.Helpers.Mail; 
+using gosarajevovol3.Services.Abstract;
 
 namespace gosarajevovol3.Controllers;
 
@@ -16,13 +15,13 @@ public class OperatorController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<User> _userManager;
-    private readonly IConfiguration _configuration; 
+    private readonly IEmailService _emailService;
 
-    public OperatorController(ApplicationDbContext context, UserManager<User> userManager, IConfiguration configuration)
+    public OperatorController(ApplicationDbContext context, UserManager<User> userManager, IEmailService emailService)
     {
         _context = context;
         _userManager = userManager;
-        _configuration = configuration; 
+        _emailService = emailService;
     }
     public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
@@ -66,39 +65,17 @@ public class OperatorController : Controller
             TempData["SuccessMessage"] = "No registered users found.";
             return RedirectToAction("Index");
         }
-        var apiKey = _configuration["SendGridSettings:ApiKey"];
-        var fromEmail = _configuration["SendGridSettings:FromEmail"];
-        var fromName = _configuration["SendGridSettings:FromName"];
-        var client = new SendGridClient(apiKey);
-        var from = new EmailAddress(fromEmail, fromName);
-        
-        var msg = new SendGridMessage()
-        {
-            From = from,
-            Subject = subject,
-            PlainTextContent = messageContent,
-            HtmlContent = messageContent 
-        };
-        msg.AddTo(new EmailAddress(fromEmail, fromName));
-        foreach (var email in sviEmailovi)
-        {
-            if (email.Equals(fromEmail, StringComparison.OrdinalIgnoreCase)) continue;
-    
-            msg.AddBcc(new EmailAddress(email));
-        }
-
         try
         {
-            var response = await client.SendEmailAsync(msg);
+            var response = await _emailService.SendToManyAsync(sviEmailovi!, subject, messageContent, messageContent);
 
-            if (response.IsSuccessStatusCode)
+            if (response.Success)
             {
                 TempData["SuccessMessage"] = $"Newsletter successfully sent to all {sviEmailovi.Count} registered users!";
             }
             else
             {
-                var errorBody = await response.Body.ReadAsStringAsync();
-                ModelState.AddModelError("", $"API Error (Status: {response.StatusCode}): {errorBody}");
+                ModelState.AddModelError("", $"API Error (Status: {response.StatusCode}): {response.Body}");
                 return View("CreateNewsletter");
             }
         }

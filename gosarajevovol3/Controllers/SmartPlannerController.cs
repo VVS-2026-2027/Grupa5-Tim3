@@ -1,4 +1,4 @@
-﻿using gosarajevovol3.Data;
+using gosarajevovol3.Data;
 using gosarajevovol3.Models;
 using gosarajevovol3.ViewModels;
 using gosarajevovol2.Models.Enums;
@@ -100,7 +100,7 @@ public class SmartPlannerController : Controller
         public DateTime? EventStart { get; set; }
     }
 
-    private int GetDailyTypeLimit(string attractionType, SmartPlannerInputViewModel input)
+    internal int GetDailyTypeLimit(string attractionType, SmartPlannerInputViewModel input)
     {
         return attractionType switch
         {
@@ -423,7 +423,7 @@ public class SmartPlannerController : Controller
             return plan;
     }
 
-    private int CalculateHospitalitySlots(SmartPlannerInputViewModel input)
+    internal int CalculateHospitalitySlots(SmartPlannerInputViewModel input)
     {
         int totalScore = input.HistoryScore + input.NatureScore +
                          input.CultureScore + input.FoodScore + input.NightlifeScore;
@@ -439,7 +439,7 @@ public class SmartPlannerController : Controller
         return Math.Clamp(slots, 1, 3);
     }
 
-    private static double Haversine(double lat1, double lon1, double lat2, double lon2)
+    internal static double Haversine(double lat1, double lon1, double lat2, double lon2)
     {
         const double R = 6371000.0;
 

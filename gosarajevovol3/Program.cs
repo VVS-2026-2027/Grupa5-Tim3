@@ -29,6 +29,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHostedService<NPSService>();
 builder.Services.AddHostedService<KupiKartuService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEmailService, SendGridEmailService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {

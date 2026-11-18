@@ -7,12 +7,17 @@ namespace gosarajevovol3.Services.Scrapers;
 
 public class NPSScraper
 {
-    private readonly HttpClient _httpClient = new HttpClient();
+    private readonly HttpClient _httpClient;
     private const string BaseUrl = "https://nps.ba/repertoar";
 
-    public NPSScraper()
+    public NPSScraper() : this(new HttpClient())
     {
-        _httpClient = new HttpClient();
+    }
+
+    // Konstruktor za unit testove: prima HttpClient sa zamjenskim (lažnim) handlerom.
+    public NPSScraper(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
         _httpClient.DefaultRequestHeaders.Add("User-Agent",
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
     }

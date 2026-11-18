@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <!-- Postavke za Fine Code Coverage: sta se NE racuna u pokrivenost -->
+  <PropertyGroup Label="FineCodeCoverage">
+    <Enabled>True</Enabled>
+    <Exclude>
+      [gosarajevovol3]AspNetCoreGeneratedDocument.*
+      [gosarajevovol3]gosarajevovol3.Migrations.*
+      [gosarajevovol3]gosarajevovol3.Views.*
+      [gosarajevovol3]Program
+      [gosarajevovol3.Tests]*
+    </Exclude>
+    <ExcludeByFile>
+      **/Migrations/*
+      **/Views/**/*
+      **/Program.cs
+    </ExcludeByFile>
+    <ExcludeByAttribute>
+      ExcludeFromCodeCoverage
+      GeneratedCode
+    </ExcludeByAttribute>
+    <IncludeTestAssembly>False</IncludeTestAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.10" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\gosarajevovol3\gosarajevovol3.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <!-- CSV i XML fajlovi sa testnim podacima kopiraju se pored testnog .dll fajla -->
+  <ItemGroup>
+    <None Update="Podaci\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

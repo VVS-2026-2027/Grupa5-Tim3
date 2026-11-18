@@ -1,7 +1,7 @@
 using gosarajevovol3.Data;
 using gosarajevovol3.Models;
 using gosarajevovol2.Models.Enums;
-using GTranslate.Translators;
+using gosarajevovol3.Services.Abstract;
 
 namespace gosarajevovol3.Services.Scrapers;
 
@@ -10,10 +10,25 @@ public class KupiKartuService : BackgroundService
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly KupiKartuScraper _scraper;
 
+    private readonly IEventTranslator _translator;
+    private readonly TimeSpan _pauseBetweenRequests;
+
+    // Koliko se čeka do sljedećeg čitanja stranice. Ako nije zadano, čeka se do zadanog doba dana.
+    // Unit test ovdje postavlja kratak interval da ne bi čekao satima.
+    internal Func<TimeSpan>? NextRunDelay { get; set; }
+
     public KupiKartuService(IServiceScopeFactory scopeFactory)
+        : this(scopeFactory, new KupiKartuScraper(), new GoogleEventTranslator("KupiKartu"), TimeSpan.FromMilliseconds(2500))
+    {
+    }
+
+    // Konstruktor za unit testove: scraper, prevodilac i pauza se zadaju izvana.
+    internal KupiKartuService(IServiceScopeFactory scopeFactory, KupiKartuScraper scraper, IEventTranslator translator, TimeSpan pauseBetweenRequests)
     {
         _scopeFactory = scopeFactory;
-        _scraper = new KupiKartuScraper(); 
+        _scraper = scraper;
+        _translator = translator;
+        _pauseBetweenRequests = pauseBetweenRequests;
     }
 
     private async Task<bool> CheckIfKupiKartuEverScraped()
@@ -35,7 +50,7 @@ public class KupiKartuService : BackgroundService
         }
         while (!stoppingToken.IsCancellationRequested)
         {
-            TimeSpan timeUntilExecution = CalculateTimeUntil1215();
+            TimeSpan timeUntilExecution = NextRunDelay?.Invoke() ?? CalculateTimeUntil1215();
             await Task.Delay(timeUntilExecution, stoppingToken);
 
             if (!stoppingToken.IsCancellationRequested)
@@ -57,37 +72,6 @@ public class KupiKartuService : BackgroundService
         return executionTime.Subtract(now);
     }
     
-    private async Task TranslateInEnAsync(Event ev)
-    {
-        var translator = new GoogleTranslator();
-        try
-        {
-            if (!string.IsNullOrEmpty(ev.EventName))
-            {
-                var nameTrans = await translator.TranslateAsync(ev.EventName, "en", "bs");
-                ev.EventNameEn = nameTrans.Translation;
-                await Task.Delay(800); 
-            }
-            if (!string.IsNullOrEmpty(ev.EventDescription))
-            {
-                var descTrans = await translator.TranslateAsync(ev.EventDescription, "en", "bs");
-                ev.EventDescriptionEn = descTrans.Translation;
-                await Task.Delay(800);
-            }
-            if (!string.IsNullOrEmpty(ev.LocationAddress))
-            {
-                var locTrans = await translator.TranslateAsync(ev.LocationAddress, "en", "bs");
-                ev.LocationAddressEn = locTrans.Translation;
-            }
-        }
-        catch (Exception ex)
-        {
-            ev.EventNameEn = ev.EventName;
-            ev.EventDescriptionEn = ev.EventDescription;
-            ev.LocationAddressEn = ev.LocationAddress;
-            Console.WriteLine($"[KupiKartu Scraper] Google limit dostignut: {ex.Message}");
-        }
-    }
 
     private EventType ChooseCategory(string url)
     {
@@ -116,12 +100,12 @@ public class KupiKartuService : BackgroundService
                     Event? noviEvent = await _scraper.ScrapeEvents(url, bazniTip);
                     if (noviEvent != null)
                     {
-                        await TranslateInEnAsync(noviEvent);
+                        await _translator.TranslateInEnAsync(noviEvent);
 
                         context.Events.Add(noviEvent);
                         await context.SaveChangesAsync();
                     }
-                    await Task.Delay(2500);
+                    await Task.Delay(_pauseBetweenRequests);
                 }
             }
         }

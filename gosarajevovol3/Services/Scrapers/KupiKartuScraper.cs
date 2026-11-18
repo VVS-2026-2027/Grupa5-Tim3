@@ -10,14 +10,20 @@ public class KupiKartuScraper
 {
     private readonly HttpClient _httpClient;
     private const string BaseUrl = "https://www.kupikartu.ba";
-    private readonly GeocodingService _geocodingService = new GeocodingService();
+    private readonly GeocodingService _geocodingService;
     
-    public KupiKartuScraper()
+    public KupiKartuScraper() : this(new HttpClient(), new GeocodingService())
     {
-        _httpClient = new HttpClient();
+    }
+
+    // Konstruktor za unit testove: prima HttpClient sa zamjenskim (lažnim) handlerom.
+    public KupiKartuScraper(HttpClient httpClient, GeocodingService geocodingService)
+    {
+        _httpClient = httpClient;
+        _geocodingService = geocodingService;
         _httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
     }
-    
+
     public async Task<List<string>> GetHamburgerMenuUrls()
     {
         List<string> hamburgerUrls = new List<string>();
@@ -82,7 +88,7 @@ public class KupiKartuScraper
         return eventUrls;
     }
     
-    static EventType ChooseCategory(string url)
+    internal static EventType ChooseCategory(string url)
     {
         if (url.EndsWith("/2")) return EventType.Concert; 
         if (url.EndsWith("/3")) return EventType.Theater; 

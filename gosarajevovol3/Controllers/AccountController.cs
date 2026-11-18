@@ -5,8 +5,6 @@ using gosarajevovol3.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SendGrid; 
-using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 
@@ -17,17 +15,17 @@ public class AccountController : Controller
     private readonly IUserService _userService;
     private readonly UserManager<User> _userManager;
     private readonly ApplicationDbContext _context;
-    private readonly IConfiguration _configuration; 
+    private readonly IEmailService _emailService;
     public AccountController(
         IUserService userService,
         UserManager<User> userManager,
         ApplicationDbContext context,
-        IConfiguration configuration)
+        IEmailService emailService)
     {
         _userService = userService;
         _userManager = userManager;
         _context = context;
-        _configuration = configuration; 
+        _emailService = emailService;
     }
 
     
@@ -164,14 +162,6 @@ public class AccountController : Controller
         var resetLink = Url.Action("ResetPassword", "Account",
             new { token = encodedToken, email = model.Email }, Request.Scheme);
 
-        var apiKey = _configuration["SendGridSettings:ApiKey"];
-        var fromEmail = _configuration["SendGridSettings:FromEmail"];
-        var fromName = _configuration["SendGridSettings:FromName"];
-
-        var client = new SendGridClient(apiKey);
-        var from = new EmailAddress(fromEmail, fromName);
-        var to = new EmailAddress(model.Email);
-
         var subject = "GoSarajevo - Reset Your Password";
         var htmlContent = $@"
         <div style='font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px;'>
@@ -184,23 +174,17 @@ public class AccountController : Controller
             <p style='color: #666; font-size: 0.9rem;'>If you did not request this change, you can safely ignore this email.</p>
         </div>";
 
-        var msg = new SendGridMessage()
-        {
-            From = from,
-            Subject = subject,
-            HtmlContent = htmlContent,
-            PlainTextContent = "Please use an HTML capable email client to reset your password."
-        };
-        msg.AddTo(to);
-
         try
         {
-            var response = await client.SendEmailAsync(msg);
+            var response = await _emailService.SendAsync(
+                model.Email,
+                subject,
+                htmlContent,
+                "Please use an HTML capable email client to reset your password.");
 
-            if (!response.IsSuccessStatusCode)
+            if (!response.Success)
             {
-                var body = await response.Body.ReadAsStringAsync();
-                ModelState.AddModelError("", $"SendGrid error ({(int)response.StatusCode}): {body}");
+                ModelState.AddModelError("", $"SendGrid error ({(int)response.StatusCode}): {response.Body}");
                 return View(model);
             }
         }

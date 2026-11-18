@@ -5,9 +5,14 @@ public class GeocodingService
 {
     private readonly HttpClient _httpClient;
 
-    public GeocodingService()
+    public GeocodingService() : this(new HttpClient())
     {
-        _httpClient = new HttpClient();
+    }
+
+    // Konstruktor za unit testove: prima HttpClient sa zamjenskim (lažnim) handlerom.
+    public GeocodingService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
         _httpClient.DefaultRequestHeaders.Add("User-Agent", "GoSarajevoApp/1.0 (student.project@etf.unsa.ba)");
     }
 
