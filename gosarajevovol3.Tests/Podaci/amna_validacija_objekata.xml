@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Slucajevi dodavanja novog ugostiteljskog objekta: koji podaci prolaze validaciju modela -->
+<slucajevi>
+  <slucaj>
+    <opis>Svi podaci ispravni</opis>
+    <naziv>Inat kuca</naziv>
+    <opisObjekta>Tradicionalna bosanska kuhinja</opisObjekta>
+    <adresa>Veliki Alifakovac 1</adresa>
+    <duzinaUrlaSlike>20</duzinaUrlaSlike>
+    <validno>true</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Naziv nije unesen</opis>
+    <naziv></naziv>
+    <opisObjekta>Opis</opisObjekta>
+    <adresa>Adresa 1</adresa>
+    <duzinaUrlaSlike>20</duzinaUrlaSlike>
+    <validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Opis nije unesen</opis>
+    <naziv>Restoran</naziv>
+    <opisObjekta></opisObjekta>
+    <adresa>Adresa 1</adresa>
+    <duzinaUrlaSlike>20</duzinaUrlaSlike>
+    <validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>Adresa nije unesena</opis>
+    <naziv>Restoran</naziv>
+    <opisObjekta>Opis</opisObjekta>
+    <adresa></adresa>
+    <duzinaUrlaSlike>20</duzinaUrlaSlike>
+    <validno>false</validno>
+  </slucaj>
+  <slucaj>
+    <opis>URL slike na granici (250 znakova)</opis>
+    <naziv>Restoran</naziv>
+    <opisObjekta>Opis</opisObjekta>
+    <adresa>Adresa 1</adresa>
+    <duzinaUrlaSlike>250</duzinaUrlaSlike>
+    <validno>true</validno>
+  </slucaj>
+  <slucaj>
+    <opis>URL slike predug (251 znak)</opis>
+    <naziv>Restoran</naziv>
+    <opisObjekta>Opis</opisObjekta>
+    <adresa>Adresa 1</adresa>
+    <duzinaUrlaSlike>251</duzinaUrlaSlike>
+    <validno>false</validno>
+  </slucaj>
+</slucajevi>
