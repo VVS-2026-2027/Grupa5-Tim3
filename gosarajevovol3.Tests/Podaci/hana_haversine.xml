@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Udaljenosti izmedju dvije tacke (u metrima) za provjeru metode Haversine -->
+<slucajevi>
+  <slucaj>
+    <opis>Ista tacka</opis>
+    <lat1>43.8563</lat1><lon1>18.4131</lon1><lat2>43.8563</lat2><lon2>18.4131</lon2>
+    <ocekivano>0</ocekivano><tolerancija>0.1</tolerancija>
+  </slucaj>
+  <slucaj>
+    <opis>Sarajevo - Mostar</opis>
+    <lat1>43.8563</lat1><lon1>18.4131</lon1><lat2>43.3438</lat2><lon2>17.8078</lon2>
+    <ocekivano>74988</ocekivano><tolerancija>50</tolerancija>
+  </slucaj>
+  <slucaj>
+    <opis>Sebilj - Vijecnica</opis>
+    <lat1>43.8590</lat1><lon1>18.4310</lon1><lat2>43.8597</lat2><lon2>18.4343</lon2>
+    <ocekivano>275.8</ocekivano><tolerancija>1</tolerancija>
+  </slucaj>
+  <slucaj>
+    <opis>Jedan stepen geografske duzine na ekvatoru</opis>
+    <lat1>0</lat1><lon1>0</lon1><lat2>0</lat2><lon2>1</lon2>
+    <ocekivano>111194.9</ocekivano><tolerancija>1</tolerancija>
+  </slucaj>
+  <slucaj>
+    <opis>Sarajevo - Banja Luka</opis>
+    <lat1>43.8563</lat1><lon1>18.4131</lon1><lat2>44.7722</lat2><lon2>17.1910</lon2>
+    <ocekivano>140802.5</ocekivano><tolerancija>50</tolerancija>
+  </slucaj>
+  <slucaj>
+    <opis>Sjeverni pol - juzni pol</opis>
+    <lat1>90</lat1><lon1>0</lon1><lat2>-90</lat2><lon2>0</lon2>
+    <ocekivano>20015086.8</ocekivano><tolerancija>10</tolerancija>
+  </slucaj>
+</slucajevi>
