@@ -33,6 +33,24 @@ public class ReviewStatisticsService
     /// </summary>
     public string GetRatingLabel(IEnumerable<Review> reviews)
     {
-        throw new NotImplementedException();
+        double average = CalculateAverageRating(reviews);
+
+        if (!reviews.Any())
+        {
+            return "No reviews";
+        }
+        if (average >= 4.5)
+        {
+            return "Excellent";
+        }
+        if (average >= 4.0)
+        {
+            return "Very good";
+        }
+        if (average >= 3.0)
+        {
+            return "Good";
+        }
+        return "Poor";
     }
 }
