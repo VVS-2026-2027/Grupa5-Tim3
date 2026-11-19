@@ -11,6 +11,11 @@ public class ReviewStatisticsService
     private const double AverageWithoutReviews = 0;
     private const int AverageDecimals = 1;
 
+    private const string NoReviewsLabel = "No reviews";
+    private const double ExcellentThreshold = 4.5;
+    private const double VeryGoodThreshold = 4.0;
+    private const double GoodThreshold = 3.0;
+
     /// <summary>
     /// Prosječna ocjena zaokružena na jednu decimalu. Bez recenzija prosjek je 0.
     /// </summary>
@@ -33,24 +38,20 @@ public class ReviewStatisticsService
     /// </summary>
     public string GetRatingLabel(IEnumerable<Review> reviews)
     {
-        double average = CalculateAverageRating(reviews);
+        ArgumentNullException.ThrowIfNull(reviews);
 
-        if (!reviews.Any())
+        var reviewList = reviews.ToList();
+        if (reviewList.Count == 0)
         {
-            return "No reviews";
+            return NoReviewsLabel;
         }
-        if (average >= 4.5)
+
+        return CalculateAverageRating(reviewList) switch
         {
-            return "Excellent";
-        }
-        if (average >= 4.0)
-        {
-            return "Very good";
-        }
-        if (average >= 3.0)
-        {
-            return "Good";
-        }
-        return "Poor";
+            >= ExcellentThreshold => "Excellent",
+            >= VeryGoodThreshold => "Very good",
+            >= GoodThreshold => "Good",
+            _ => "Poor"
+        };
     }
 }
