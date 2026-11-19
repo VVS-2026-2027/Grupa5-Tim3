@@ -8,29 +8,22 @@ namespace gosarajevovol3.Services;
 /// </summary>
 public class ReviewStatisticsService
 {
+    private const double AverageWithoutReviews = 0;
+    private const int AverageDecimals = 1;
+
     /// <summary>
     /// Prosječna ocjena zaokružena na jednu decimalu. Bez recenzija prosjek je 0.
     /// </summary>
     public double CalculateAverageRating(IEnumerable<Review> reviews)
     {
-        if (reviews == null)
+        ArgumentNullException.ThrowIfNull(reviews);
+
+        var ratings = reviews.Select(review => review.Rating).ToList();
+        if (ratings.Count == 0)
         {
-            throw new ArgumentNullException(nameof(reviews));
+            return AverageWithoutReviews;
         }
 
-        int sum = 0;
-        int count = 0;
-        foreach (var review in reviews)
-        {
-            sum += review.Rating;
-            count++;
-        }
-
-        if (count == 0)
-        {
-            return 0;
-        }
-
-        return Math.Round((double)sum / count, 1, MidpointRounding.AwayFromZero);
+        return Math.Round(ratings.Average(), AverageDecimals, MidpointRounding.AwayFromZero);
     }
 }
