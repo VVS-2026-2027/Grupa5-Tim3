@@ -26,4 +26,13 @@ public class ReviewStatisticsService
 
         return Math.Round(ratings.Average(), AverageDecimals, MidpointRounding.AwayFromZero);
     }
+
+    /// <summary>
+    /// Opisna oznaka objekta prema prosječnoj ocjeni:
+    /// Excellent (od 4.5), Very good (od 4.0), Good (od 3.0), Poor (ispod 3.0), No reviews (bez recenzija).
+    /// </summary>
+    public string GetRatingLabel(IEnumerable<Review> reviews)
+    {
+        throw new NotImplementedException();
+    }
 }

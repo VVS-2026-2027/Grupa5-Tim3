@@ -55,4 +55,40 @@ public class ReviewStatisticsServiceTests
     {
         _service.CalculateAverageRating(null!);
     }
+
+    // ---------- Ciklus 2: opisna oznaka (test napisala: Amina) ----------
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    public void GetRatingLabel_NemaRecenzija_VracaNoReviews()
+    {
+        var label = _service.GetRatingLabel(new List<Review>());
+
+        Assert.AreEqual("No reviews", label);
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [DataRow(new[] { 5, 5 }, "Excellent", DisplayName = "Prosjek 5.0")]
+    [DataRow(new[] { 5, 4 }, "Excellent", DisplayName = "Prosjek 4.5 (donja granica za Excellent)")]
+    [DataRow(new[] { 5, 4, 4, 5, 4 }, "Very good", DisplayName = "Prosjek 4.4")]
+    [DataRow(new[] { 4 }, "Very good", DisplayName = "Prosjek 4.0 (donja granica za Very good)")]
+    [DataRow(new[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 3 }, "Good", DisplayName = "Prosjek 3.9")]
+    [DataRow(new[] { 3 }, "Good", DisplayName = "Prosjek 3.0 (donja granica za Good)")]
+    [DataRow(new[] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 2 }, "Poor", DisplayName = "Prosjek 2.9")]
+    [DataRow(new[] { 1 }, "Poor", DisplayName = "Prosjek 1.0")]
+    public void GetRatingLabel_RecenzijePostoje_VracaOznakuPremaProsjeku(int[] ocjene, string ocekivanaOznaka)
+    {
+        var label = _service.GetRatingLabel(ReviewsWithRatings(ocjene));
+
+        Assert.AreEqual(ocekivanaOznaka, label);
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void GetRatingLabel_ListaJeNull_BacaArgumentNullException()
+    {
+        _service.GetRatingLabel(null!);
+    }
 }
