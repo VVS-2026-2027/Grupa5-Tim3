@@ -13,6 +13,24 @@ public class ReviewStatisticsService
     /// </summary>
     public double CalculateAverageRating(IEnumerable<Review> reviews)
     {
-        throw new NotImplementedException();
+        if (reviews == null)
+        {
+            throw new ArgumentNullException(nameof(reviews));
+        }
+
+        int sum = 0;
+        int count = 0;
+        foreach (var review in reviews)
+        {
+            sum += review.Rating;
+            count++;
+        }
+
+        if (count == 0)
+        {
+            return 0;
+        }
+
+        return Math.Round((double)sum / count, 1, MidpointRounding.AwayFromZero);
     }
 }
