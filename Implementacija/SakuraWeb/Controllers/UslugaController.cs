@@ -1,0 +1,179 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using SakuraWeb.Data;
+using SakuraWeb.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace SakuraWeb.Controllers
+{
+    //[Authorize (Roles ="Korisnik, Administrator, Zaposlenik")]
+    [Authorize]
+    public class UslugaController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public UslugaController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: Usluga
+        [AllowAnonymous]
+        public async Task<IActionResult> Index()
+        {
+            var usluge = await _context.usluge
+                .OrderBy(u => u.kategorija)
+                .ThenBy(u => u.naziv)
+                .ToListAsync();
+
+            ViewBag.Frizeri = await _context.korisnici
+                .Where(k => k.ulogaKorisnika == Uloga.Frizer)
+                .ToListAsync();
+
+            return View(usluge);
+        }
+
+        // GET: Usluga/Details/5
+        [Authorize(Roles = "Klijent, Administrator, Frizer")]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usluga = await _context.usluge
+                .FirstOrDefaultAsync(m => m.id == id);
+            if (usluga == null)
+            {
+                return NotFound();
+            }
+
+            return View(usluga);
+        }
+
+        // GET: Usluga/Create
+        [Authorize(Roles = "Administrator")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Usluga/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Create([Bind("id,naziv,opis,cijena,kategorija,trajanje")] Usluga usluga)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(usluga);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(usluga);
+        }
+
+        // GET: Usluga/Edit/5
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usluga = await _context.usluge.FindAsync(id);
+            if (usluga == null)
+            {
+                return NotFound();
+            }
+            return View(usluga);
+        }
+
+        // POST: Usluga/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Edit(int id, [Bind("id,naziv,opis,cijena,kategorija,trajanje")] Usluga usluga)
+        {
+            if (id != usluga.id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(usluga);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UslugaExists(usluga.id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(usluga);
+        }
+
+        // GET: Usluga/Delete/5
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usluga = await _context.usluge
+                .FirstOrDefaultAsync(m => m.id == id);
+            if (usluga == null)
+            {
+                return NotFound();
+            }
+
+            return View(usluga);
+        }
+
+        // POST: Usluga/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var usluga = await _context.usluge.FindAsync(id);
+            if (usluga != null)
+            {
+                _context.usluge.Remove(usluga);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool UslugaExists(int id)
+        {
+            return _context.usluge.Any(e => e.id == id);
+        }
+    }
+}

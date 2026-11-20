@@ -1,0 +1,171 @@
+@model IEnumerable<SakuraWeb.Models.Proizvod>
+
+@{
+    ViewData["Title"] = "Proizvodi";
+}
+
+
+@if (User.IsInRole("Administrator"))
+{
+    <partial name="_AdminNavPartial"></partial>
+
+  <div class="shadow-lg rounded-4 p-4 w-100 sakura-lightgray-bg mb-4 mt-4">
+        <h2 class="text-center mb-4">Izmjena proizvoda</h2>
+
+        <a asp-action="Create" class="sakura-btn-dark mb-2">Dodajte novi proizvod</a>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Naziv
+                        </th>
+                        <th>
+                            Cijena
+                        </th>
+                        <th>
+                            Kategorija
+                        </th>
+                        <th>
+                            Volumen
+                        </th>
+                        <th>
+                            Slika
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+@foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.naziv)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.cijena)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.kategorija)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.volumen)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.slikaPutanja)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.id">Uredi</a> |
+                            <a asp-action="Details" asp-route-id="@item.id">Detalji</a> |
+                            <a asp-action="Delete" asp-route-id="@item.id">Izbriši</a>
+                        </td>
+                    </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+} else {
+
+<header class="sakura-header-grad push-it-down">
+    <h1 class="stack-sans-headline-h1 sakura-hotpink text-center">Proizvodi</h1>
+</header>
+
+<div class="container">
+    <form asp-controller="Proizvodi" asp-action="Index" method="get">
+        <input type="hidden" id="sort" name="sort" value="@ViewBag.Sort" />
+        <input type="hidden" id="kategorija" name="kategorija" value="@ViewBag.Kategorija" />
+
+        <div class="d-flex justify-content-end gap-3">
+
+            <!-- SORT -->
+            <div class="dropdown">
+                <button class="sakura-btn-dark dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        style="padding-left:50px;padding-right:50px;">
+                    Sortiraj
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item sort-option" data-value="CijenaUzlazno" href="#">Cijena uzlazno</a></li>
+                    <li><a class="dropdown-item sort-option" data-value="CijenaSilazno" href="#">Cijena silazno</a></li>
+                    <li><a class="dropdown-item sort-option" data-value="NazivUzlazno" href="#">Naziv uzlazno</a></li>
+                    <li><a class="dropdown-item sort-option" data-value="NazivSilazno" href="#">Naziv silazno</a></li>
+                </ul>
+            </div>
+
+            <!-- FILTER -->
+            <div class="dropdown">
+                <button class="sakura-btn-dark dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        style="padding-left:50px;padding-right:50px;">
+                    Filtriraj
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item filter-option"
+                           data-value="Sve"
+                           href="#">
+                            Prikaži sve
+                        </a>
+                    </li>
+
+                    @foreach (var item in Html.GetEnumSelectList<KategorijaProizvoda>())
+                    {
+                        <li>
+                            <a class="dropdown-item filter-option"
+                               data-value="@item.Value"
+                               href="#">
+                                @item.Text
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <button type="submit" class="sakura-btn-dark">
+                Primijeni
+            </button>
+
+        </div>
+    </form>
+    <div class="proizvodi-container mx-auto row scroll-container-proizvodi">
+@foreach (var item in Model) {
+    var naslov = item.naziv;
+            <div class="col-sm-3 p-2">
+                <div class="proizvod-card-proizvodi d-flex flex-column align-items-center">
+
+                    <div class="image-wrapper-proizvodi">
+                        <img src="~/img/@item.slikaPutanja" alt="@item.naziv">
+                    </div>
+
+                    <p class="wittgenstein-proizvodi text-center">@naslov</p>
+
+                    <div class="volumen-cijena-proizvodi mt-auto">
+                        <span> <a asp-controller="Proizvodi" asp-action="Details" asp-route-id="@item.id">@item.cijena KM</a></span>
+                    </div>
+
+                </div>
+            </div>
+}
+    </div>
+</div>
+}
+<script>
+    document.querySelectorAll('.sort-option').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('sort').value = this.dataset.value;
+        });
+    });
+
+    document.querySelectorAll('.filter-option').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('kategorija').value = this.dataset.value;
+        });
+    });
+</script>

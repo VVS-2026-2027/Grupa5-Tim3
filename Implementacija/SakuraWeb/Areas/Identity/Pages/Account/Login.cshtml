@@ -1,0 +1,60 @@
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<div class="login-pozadina">
+    <div class="container-fluid vh-100 d-flex align-items-center">
+        <div class="row w-100">
+
+            <!-- LEFT SIDE -->
+            <div class="col-6 d-flex justify-content-center">
+                <div class="login-box shadow-lg rounded-4 p-4 w-100">
+                    <h1 class="text-center">Dobrodošli nazad!</h1><br>
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                        
+                        <p>
+                            <label asp-for="Input.Email" class="form-label"><h4>Email adresa:</h4></label>
+                            <input asp-for="Input.Email" class="form-control mb-2" aria-required="true" placeholder="Email adresa..." />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </p>
+                        <p>
+                            <label asp-for="Input.Password" class="form-label"><h4>Lozinka:</h4></label>
+                            <input asp-for="Input.Password" class="form-control mb-3" aria-required="true" placeholder="Lozinka..." />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </p>
+                        
+
+                        <div class="row">
+                            <div class="col-4">
+                                <button id="login-submit" type="submit" class="btn sakura-btn-coldpink w-80">Prijavite se</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row mt-2">
+                        <div class="col-4 text-start">
+                            Nemate nalog?
+                        </div>
+
+                        <div class="col-4 text-center">
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registujte se.</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- RIGHT SIDE (optional) -->
+            <div class="col-6">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

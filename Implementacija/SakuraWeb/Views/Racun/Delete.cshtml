@@ -1,0 +1,35 @@
+﻿@model SakuraWeb.Models.Korisnik
+
+@{
+    ViewData["Title"] = "Brisanje računa";
+}
+
+<div class="container mt-4">
+    <partial name="_AdminNavPartial"></partial>
+    <div class="text-center">
+        <h1 class="admin-panel-heading">Brisanje računa</h1><br>
+    </div>
+
+    <div class="shadow-lg rounded-4 p-4 w-100 sakura-lightgray-bg" style="max-width: 600px; margin: 0 auto;">
+        <p class="text-center" style="font-size: 18px; margin-bottom: 30px;">
+            Kliknite dugme ispod da bi obrisali račun za korisnika <strong>@Model.korisnickoIme</strong>.
+        </p>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label for="Razlog" style="font-size: 16px;">Razlog brisanja:</label>
+                <input type="text" id="Razlog" name="Razlog" class="form-control" placeholder="Unesite razlog za brisanje..." required>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="sakura-btn-coldpink" style="font-size: 18px!important; width: 100%;">Obriši račun</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-action="Index" class="sakura-btn-dark">Nazad</a>
+        </div>
+    </div>
+</div>

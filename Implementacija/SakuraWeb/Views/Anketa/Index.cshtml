@@ -1,0 +1,184 @@
+@model List<SakuraWeb.Models.Pitanje>
+
+@{
+    ViewData["Title"] = "Anketa";
+}
+
+<section class="anketa-page">
+    <section class="anketa-hero anketa-view is-active" aria-labelledby="anketa-title" data-anketa-view="start">
+        <div class="anketa-hero__content">
+            <h1 id="anketa-title" class="stack-sans-headline-h1">Tvoja savršena rutina</h1>
+            <p class="anketa-lead">Odgovori na nekoliko pitanja i pronađi proizvode koji najbolje odgovaraju tvojoj kosi.</p>
+            <button type="button" class="btn sakura-btn-dark anketa-primary-btn" data-anketa-next>Start</button>
+        </div>
+    </section>
+
+    @{
+        int brojPitanja = Model.Count;
+    }
+    @for (int i = 0; i < brojPitanja; i++)
+    {
+        var pitanje = Model[i];
+        bool zadnje = (i == brojPitanja - 1);
+
+        <section class="anketa-question-section anketa-view" aria-labelledby="anketa-question-title-@pitanje.id" data-anketa-view="question">
+            <div class="anketa-question-card">
+                <span class="redni-broj-pitanja">@(i + 1)</span>
+                <p class="anketa-eyebrow">Pitanje @(i + 1) od @brojPitanja</p>
+                <h2 id="anketa-question-title-@pitanje.id" class="stack-sans-headline-h2">@pitanje.sadrzaj</h2>
+
+                <fieldset class="anketa-options radio-options" aria-label="@pitanje.sadrzaj">
+                    @foreach (var odgovor in pitanje.odgovori)
+                    {
+                        <div class="radio-option radio-option-anketa">
+                            <input type="radio" value="@odgovor.id" name="pitanje-@pitanje.id" id="odgovor-@odgovor.id" data-poeni="@odgovor.poeni">
+                            <label for="odgovor-@odgovor.id">@odgovor.sadrzaj</label>
+                        </div>
+                    }
+                </fieldset>
+
+                <div class="anketa-question-actions">
+                    <button type="button" class="btn anketa-back-btn" data-anketa-back>Nazad</button>
+                    <button type="button" class="btn anketa-next-btn" data-anketa-next disabled>
+                        @(zadnje ? "Prikaži preporuku" : "Sljedeće")
+                    </button>
+                </div>
+            </div>
+        </section>
+    }
+
+    <section class="anketa-result-section anketa-view" aria-labelledby="anketa-result-title" data-anketa-view="result">
+        <div class="anketa-result-heading">
+            <p class="anketa-eyebrow">Preporuka</p>
+            <h2 id="anketa-result-title" class="stack-sans-headline-h1">Tvoja rutina je spremna!</h2>
+        </div>
+
+        <div class="anketa-rutina" id="anketa-rutina-container">
+            <p>Učitavanje preporuke...</p>
+        </div>
+
+        <div class="anketa-result-actions">
+            <button type="button" class="btn anketa-back-btn" data-anketa-back>Nazad</button>
+            <button type="button" class="btn sakura-btn-dark anketa-primary-btn" data-anketa-restart>Ponovi anketu</button>
+        </div>
+    </section>
+</section>
+
+@section Scripts {
+    <script>
+        (() => {
+            const views = Array.from(document.querySelectorAll(".anketa-view"));
+            let currentIndex = 0;
+
+            const showView = (index) => {
+                currentIndex = index;
+                views.forEach((view, viewIndex) => {
+                    const isActive = viewIndex === currentIndex;
+                    view.classList.toggle("is-active", isActive);
+                    view.setAttribute("aria-hidden", String(!isActive));
+                });
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            };
+
+            const updateQuestionButton = (questionView) => {
+                if (questionView.dataset.anketaView !== "question") {
+                    return;
+                }
+                const checkedAnswer = questionView.querySelector("input[type='radio']:checked");
+                const nextButton = questionView.querySelector("[data-anketa-next]");
+                if (nextButton) {
+                    nextButton.disabled = !checkedAnswer;
+                }
+            };
+
+            views.forEach((view) => {
+                view.querySelectorAll("input[type='radio']").forEach((input) => {
+                    input.addEventListener("change", () => updateQuestionButton(view));
+                });
+                updateQuestionButton(view);
+            });
+
+            // Prikupi sve odabrane odgovorId-eve i posalji na server
+            const ucitajPreporuku = async () => {
+                const odgovorIds = [];
+                document.querySelectorAll(".anketa-question-section input[type='radio']:checked").forEach((input) => {
+                    odgovorIds.push(parseInt(input.value, 10));
+                });
+
+                const container = document.getElementById("anketa-rutina-container");
+                container.innerHTML = "<p>Učitavanje preporuke...</p>";
+
+                try {
+                    const response = await fetch("/Anketa/Preporuka", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(odgovorIds)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Greška u odgovoru servera");
+                    }
+
+                    const preporuke = await response.json();
+
+                    if (!preporuke || preporuke.length === 0) {
+                        container.innerHTML = "<p>Nismo pronašli preporuku. Pokušajte ponovo.</p>";
+                        return;
+                    }
+
+                    container.innerHTML = "";
+                    preporuke.forEach((proizvod, index) => {
+                        const slikaSrc = proizvod.slika
+                            ? `/img/${proizvod.slika}`
+                            : "/img/placeholder.png";
+
+                        const article = document.createElement("article");
+                        article.className = "anketa-product-card";
+                        article.innerHTML = `
+                                    <span class="anketa-step">${index + 1}</span>
+                                    <img src="${slikaSrc}" alt="${proizvod.naziv}">
+                                    <p>${proizvod.naziv}</p>
+                                `;
+                        container.appendChild(article);
+                    });
+                } catch (err) {
+                    console.error(err);
+                    container.innerHTML = "<p>Došlo je do greške prilikom učitavanja preporuke.</p>";
+                }
+            };
+
+            document.querySelectorAll("[data-anketa-next]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    const activeView = views[currentIndex];
+                    if (activeView.dataset.anketaView === "question" && !activeView.querySelector("input[type='radio']:checked")) {
+                        return;
+                    }
+
+                    const nextIndex = Math.min(currentIndex + 1, views.length - 1);
+                    showView(nextIndex);
+
+                    // Ako smo upravo prešli na rezultat, pozovi preporuku
+                    if (views[nextIndex].dataset.anketaView === "result") {
+                        ucitajPreporuku();
+                    }
+                });
+            });
+
+            document.querySelectorAll("[data-anketa-back]").forEach((button) => {
+                button.addEventListener("click", () => {
+                    showView(Math.max(currentIndex - 1, 0));
+                });
+            });
+
+            document.querySelector("[data-anketa-restart]")?.addEventListener("click", () => {
+                document.querySelectorAll(".anketa-view input[type='radio']").forEach((input) => {
+                    input.checked = false;
+                });
+                views.forEach(updateQuestionButton);
+                showView(0);
+            });
+
+            showView(0);
+        })();
+    </script>
+}
