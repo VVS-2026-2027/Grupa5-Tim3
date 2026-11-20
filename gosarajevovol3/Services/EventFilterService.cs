@@ -45,7 +45,19 @@ public class EventFilterService
     /// </summary>
     public List<Event> Search(IEnumerable<Event> events, string? text)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(events);
+
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return events.OrderBy(ev => ev.StartDate).ToList();
+        }
+
+        string wanted = text.Trim();
+        return events
+            .Where(ev => ev.EventName.Contains(wanted, StringComparison.OrdinalIgnoreCase)
+                         || (ev.EventNameEn != null && ev.EventNameEn.Contains(wanted, StringComparison.OrdinalIgnoreCase)))
+            .OrderBy(ev => ev.StartDate)
+            .ToList();
     }
 
     private static void EnsureValidPeriod(DateTime from, DateTime to)
