@@ -28,6 +28,18 @@ public class EventFilterService
     /// </summary>
     public List<Event> FilterByDateRange(IEnumerable<Event> events, DateTime from, DateTime to)
     {
-        throw new NotImplementedException();
+        if (events == null)
+        {
+            throw new ArgumentNullException(nameof(events));
+        }
+        if (from > to)
+        {
+            throw new ArgumentException("Start of the period must not be after its end.");
+        }
+
+        return events
+            .Where(ev => ev.StartDate >= from && ev.StartDate <= to)
+            .OrderBy(ev => ev.StartDate)
+            .ToList();
     }
 }
