@@ -55,10 +55,7 @@ public class ApplicationDbContextTests
         Assert.AreEqual(2, _context.RegisteredUsers.Count());
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): lozinke početnih korisnika su sačuvane kao hash
-    /// i hash odgovara zadanoj lozinci.
-    /// </summary>
+ 
     [TestMethod]
     [TestCategory("DbContext")]
     [TestCategory("DataDriven")]
@@ -95,9 +92,7 @@ public class ApplicationDbContextTests
         Assert.AreEqual("Users", entity.GetTableName());
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): svaka vrsta korisnika ima svoju oznaku u koloni UserType.
-    /// </summary>
+  
     [TestMethod]
     [TestCategory("DbContext")]
     [TestCategory("DataDriven")]

@@ -68,7 +68,7 @@ public class GeocodingServiceTests
     [TestCategory("Geocoding")]
     public async Task GetCoordinatesAsync_RezultatBezKoordinata_VracaNulaNula()
     {
-        // Convert.ToDouble(null) vraća 0, pa servis vraća tačku (0, 0) umjesto null.
+      
         _handler.AddResponse("nominatim", "[{\"display_name\":\"Sarajevo\"}]");
 
         var result = await _service.GetCoordinatesAsync("Sarajevo");
@@ -99,9 +99,7 @@ public class GeocodingServiceTests
         StringAssert.StartsWith(_handler.LastUserAgent, "GoSarajevoApp/1.0");
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima u samom kodu (DataRow): različiti zapisi koordinata.
-    /// </summary>
+  
     [TestMethod]
     [TestCategory("Geocoding")]
     [TestCategory("DataDriven")]
@@ -119,10 +117,6 @@ public class GeocodingServiceTests
         Assert.AreEqual(lon, result.Value.Lng, 0.0001);
     }
 
-    /// <summary>
-    /// Integracijski test sa stvarnim servisom. Namjerno se preskače ([Ignore]):
-    /// unit testovi ne smiju zavisiti od interneta. Atribut se može privremeno ukloniti za ručnu provjeru.
-    /// </summary>
     [TestMethod]
     [TestCategory("Integracijski")]
     [TestProperty("Zavisnost", "Internet")]

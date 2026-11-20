@@ -22,13 +22,11 @@ public class KupiKartuScraperTests
         _scraper = new KupiKartuScraper(new HttpClient(_handler), geocoding);
     }
 
-    /// <summary>Stranica događaja: prvi pasus je datum, drugi je lokacija.</summary>
     private static string EventPage(string datum, string lokacija, string naziv = "Koncert")
     {
         return $"<html><body><h1>{naziv}</h1><p>{datum}</p><p>{lokacija}</p></body></html>";
     }
 
-    // ---------- GetHamburgerMenuUrls ----------
 
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
@@ -78,8 +76,6 @@ public class KupiKartuScraperTests
         Assert.AreEqual(0, urls.Count);
     }
 
-    // ---------- GetEventUrls ----------
-
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     public async Task GetEventUrls_KategorijaSaDogadjajima_VracaAdreseBezDuplikata()
@@ -114,11 +110,8 @@ public class KupiKartuScraperTests
         Assert.AreEqual(0, urls.Count);
     }
 
-    // ---------- ChooseCategory ----------
 
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka): tip događaja prema adresi kategorije.
-    /// </summary>
+  
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]
@@ -130,7 +123,6 @@ public class KupiKartuScraperTests
         Assert.AreEqual(ocekivaniTip, tip);
     }
 
-    // ---------- ScrapeEvents ----------
 
     public static IEnumerable<object?[]> DogadjajiIzXmlFajla()
     {
@@ -139,10 +131,7 @@ public class KupiKartuScraperTests
             ("slika", typeof(string)), ("opisDogadjaja", typeof(string)));
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz XML fajla (DynamicData): iz sačuvanog HTML-a
-    /// moraju se izvući naziv, adresa, slika i opis događaja.
-    /// </summary>
+
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]
@@ -174,9 +163,7 @@ public class KupiKartuScraperTests
         Assert.AreEqual(ev.StartDate, ev.EndDate);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): zapisi datuma koje scraper zna pročitati.
-    /// </summary>
+   
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]
@@ -193,9 +180,6 @@ public class KupiKartuScraperTests
         Assert.AreEqual(new DateTime(DateTime.Now.Year, mjesec, dan), ev!.StartDate);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): datum koji se ne može pročitati zamjenjuje se današnjim.
-    /// </summary>
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]
@@ -265,7 +249,6 @@ public class KupiKartuScraperTests
         Assert.AreEqual(EventType.Theater, ev!.Type);
     }
 
-    // ---------- ScrapeEvents: koordinate ----------
 
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
@@ -294,9 +277,7 @@ public class KupiKartuScraperTests
         Assert.AreEqual(18.4150, ev.Coordinates.Longitude, 0.0001);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): kada adresu nije moguće pronaći, ostaju koordinate centra Sarajeva.
-    /// </summary>
+   
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]

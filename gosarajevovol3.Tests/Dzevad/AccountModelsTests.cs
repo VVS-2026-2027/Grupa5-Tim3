@@ -5,11 +5,6 @@ using gosarajevovol3.ViewModels;
 
 namespace gosarajevovol3.Tests.Dzevad;
 
-/// <summary>
-/// Autor testova: Dževad.
-/// Testiraju se view modeli za prijavu, registraciju i reset lozinke (pravila validacije)
-/// i klase korisnika (User, RegisteredUser, Admin, Operator).
-/// </summary>
 [TestClass]
 public class AccountModelsTests
 {
@@ -20,7 +15,6 @@ public class AccountModelsTests
         return results;
     }
 
-    // ---------- RegisterViewModel ----------
 
     public static IEnumerable<object?[]> RegistracijeIzXmlFajla()
     {
@@ -28,9 +22,6 @@ public class AccountModelsTests
             ("email", typeof(string)), ("lozinka", typeof(string)), ("potvrda", typeof(string)), ("validno", typeof(bool)));
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz XML fajla (DynamicData): više slučajeva registracije novog korisnika.
-    /// </summary>
     [TestMethod]
     [TestCategory("ViewModel")]
     [TestCategory("DataDriven")]
@@ -78,11 +69,6 @@ public class AccountModelsTests
         Assert.AreEqual(string.Empty, model.ConfirmPassword);
     }
 
-    // ---------- LogInViewModel ----------
-
-    /// <summary>
-    /// Data-driven test (DataRow): poruke o grešci na formi za prijavu.
-    /// </summary>
     [TestMethod]
     [TestCategory("ViewModel")]
     [TestCategory("DataDriven")]
@@ -110,7 +96,6 @@ public class AccountModelsTests
         Assert.IsTrue(model.RememberMe);
     }
 
-    // ---------- ForgotPasswordViewModel ----------
 
     [TestMethod]
     [TestCategory("ViewModel")]
@@ -127,11 +112,6 @@ public class AccountModelsTests
         Assert.AreEqual(ocekivano, errors.Count == 0);
     }
 
-    // ---------- ResetPasswordViewModel ----------
-
-    /// <summary>
-    /// Data-driven test (DataRow): validacija forme za novu lozinku.
-    /// </summary>
     [TestMethod]
     [TestCategory("ViewModel")]
     [TestCategory("DataDriven")]
@@ -161,7 +141,6 @@ public class AccountModelsTests
         Assert.AreEqual("The password must be at least 6 characters long.", errors.Single().ErrorMessage);
     }
 
-    // ---------- ProfileViewModel ----------
 
     [TestMethod]
     [TestCategory("ViewModel")]
@@ -174,7 +153,6 @@ public class AccountModelsTests
         Assert.AreEqual(0, model.Plans.Count);
     }
 
-    // ---------- Klase korisnika ----------
 
     [TestMethod]
     [TestCategory("Model")]
@@ -196,9 +174,6 @@ public class AccountModelsTests
         Assert.AreEqual(0, oper.Newsletters.Count);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): sve tri vrste korisnika nasljeđuju klasu User.
-    /// </summary>
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]

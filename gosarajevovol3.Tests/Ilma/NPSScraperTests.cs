@@ -5,11 +5,6 @@ using gosarajevovol3.Tests.Helpers;
 
 namespace gosarajevovol3.Tests.Ilma;
 
-/// <summary>
-/// Autor testova: Ilma.
-/// Testira se NPSScraper - čitanje repertoara sa stranice Narodnog pozorišta Sarajevo (nps.ba).
-/// Internet je zamijenjen objektom FakeHttpMessageHandler, koji vraća pripremljen HTML.
-/// </summary>
 [TestClass]
 public class NPSScraperTests
 {
@@ -29,8 +24,6 @@ public class NPSScraperTests
     {
         return $"<html><body><h1>Drama Hasanaginica</h1>{body}</body></html>";
     }
-
-    // ---------- GetPlayUrls ----------
 
     [TestMethod]
     [TestCategory("NPSScraper")]
@@ -81,7 +74,6 @@ public class NPSScraperTests
         Assert.AreEqual(0, urls.Count);
     }
 
-    // ---------- ScrapePlayDetails: osnovni podaci ----------
 
     public static IEnumerable<object?[]> PredstaveIzXmlFajla()
     {
@@ -89,10 +81,6 @@ public class NPSScraperTests
             ("html", typeof(string)), ("naziv", typeof(string)), ("slika", typeof(string)), ("opisPredstave", typeof(string)));
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz XML fajla (DynamicData): iz sačuvanog HTML-a
-    /// moraju se izvući naziv, slika i opis predstave.
-    /// </summary>
     [TestMethod]
     [TestCategory("NPSScraper")]
     [TestCategory("DataDriven")]
@@ -133,11 +121,6 @@ public class NPSScraperTests
         Assert.IsNull(ev);
     }
 
-    // ---------- ScrapePlayDetails: opis ----------
-
-    /// <summary>
-    /// Data-driven test (DataRow): pasusi koji nisu dio opisa predstave se preskaču.
-    /// </summary>
     [TestMethod]
     [TestCategory("NPSScraper")]
     [TestCategory("DataDriven")]
@@ -202,7 +185,6 @@ public class NPSScraperTests
         Assert.AreEqual("Prvi dio teksta. Drugi dio.", ev!.EventDescription);
     }
 
-    // ---------- ScrapePlayDetails: datum i trajanje ----------
 
     [TestMethod]
     [TestCategory("NPSScraper")]
@@ -232,9 +214,6 @@ public class NPSScraperTests
         Assert.AreEqual(new DateTime(2026, 5, 1, 20, 0, 0), ev!.StartDate);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): kada datum nije moguće pročitati, početak je trenutno vrijeme.
-    /// </summary>
     [TestMethod]
     [TestCategory("NPSScraper")]
     [TestCategory("DataDriven")]
@@ -252,10 +231,6 @@ public class NPSScraperTests
         Assert.IsTrue(ev!.StartDate >= prije && ev.StartDate <= DateTime.Now);
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka): trajanje predstave
-    /// se čita iz teksta stranice; ako ga nema, podrazumijeva se 90 minuta.
-    /// </summary>
     [TestMethod]
     [TestCategory("NPSScraper")]
     [TestCategory("DataDriven")]

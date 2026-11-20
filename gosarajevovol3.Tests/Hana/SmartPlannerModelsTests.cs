@@ -5,10 +5,6 @@ using gosarajevovol3.ViewModels;
 
 namespace gosarajevovol3.Tests.Hana;
 
-/// <summary>
-/// Autor testova: Hana.
-/// Testiraju se view modeli i modeli koje koristi Smart Planner.
-/// </summary>
 [TestClass]
 public class SmartPlannerModelsTests
 {
@@ -35,10 +31,6 @@ public class SmartPlannerModelsTests
         Assert.IsNull(model.StartLng);
     }
 
-    /// <summary>
-    /// Rezultat je prosjek dva odgovora. Math.Round zaokružuje polovinu na paran broj
-    /// (2.5 postaje 2, a 3.5 postaje 4).
-    /// </summary>
     [TestMethod]
     [TestCategory("ViewModel")]
     [DataRow(1, 1, 1)]

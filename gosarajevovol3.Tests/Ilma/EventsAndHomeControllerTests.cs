@@ -10,10 +10,6 @@ using Moq;
 
 namespace gosarajevovol3.Tests.Ilma;
 
-/// <summary>
-/// Autor testova: Ilma.
-/// Testiraju se EventsController (lista i kalendar događaja) i HomeController (početna stranica).
-/// </summary>
 [TestClass]
 public class EventsAndHomeControllerTests
 {
@@ -54,14 +50,12 @@ public class EventsAndHomeControllerTests
         _context.Dispose();
     }
 
-    /// <summary>Rezultat akcije GetEventsJson pretvoren u JSON dokument radi provjere polja.</summary>
     private async Task<JsonElement> GetEventsJsonAsync()
     {
         var result = await _events.GetEventsJson() as JsonResult;
         return JsonDocument.Parse(JsonSerializer.Serialize(result!.Value)).RootElement;
     }
 
-    // ---------- EventsController.Index ----------
 
     [TestMethod]
     [TestCategory("Events")]
@@ -86,7 +80,6 @@ public class EventsAndHomeControllerTests
         Assert.AreEqual(0, ((List<Event>)result!.Model!).Count);
     }
 
-    // ---------- EventsController.GetEventsJson ----------
 
     [TestMethod]
     [TestCategory("Events")]
@@ -148,7 +141,6 @@ public class EventsAndHomeControllerTests
         Assert.AreEqual(0, json.GetArrayLength());
     }
 
-    // ---------- HomeController ----------
 
     [TestMethod]
     [TestCategory("Home")]

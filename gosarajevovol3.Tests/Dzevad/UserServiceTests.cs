@@ -8,11 +8,6 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace gosarajevovol3.Tests.Dzevad;
 
-/// <summary>
-/// Autor testova: Dževad.
-/// Testira se UserService - registracija, prijava, odjava i brisanje korisnika.
-/// UserManager i SignInManager su zamjenski objekti (Moq), pa se ne koristi prava baza korisnika.
-/// </summary>
 [TestClass]
 public class UserServiceTests
 {
@@ -46,7 +41,6 @@ public class UserServiceTests
         _userManagerMock.Setup(m => m.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(result);
     }
 
-    // ---------- Registracija ----------
 
     [TestMethod]
     [TestCategory("UserService")]
@@ -100,7 +94,6 @@ public class UserServiceTests
         Assert.AreEqual("Passwords must be at least 6 characters.", result.Errors.Single().Description);
     }
 
-    // ---------- Prijava i odjava ----------
 
     [TestMethod]
     [TestCategory("UserService")]
@@ -116,10 +109,6 @@ public class UserServiceTests
             Times.Never);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): servis vraća tačno onaj rezultat koji da SignInManager,
-    /// a opcija "zapamti me" se prosljeđuje bez izmjene.
-    /// </summary>
     [TestMethod]
     [TestCategory("UserService")]
     [TestCategory("DataDriven")]
@@ -150,7 +139,6 @@ public class UserServiceTests
         _signInManagerMock.Verify(s => s.SignOutAsync(), Times.Once);
     }
 
-    // ---------- Čitanje i brisanje korisnika ----------
 
     [TestMethod]
     [TestCategory("UserService")]

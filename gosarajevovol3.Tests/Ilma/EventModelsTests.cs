@@ -4,10 +4,6 @@ using gosarajevovol3.Models;
 
 namespace gosarajevovol3.Tests.Ilma;
 
-/// <summary>
-/// Autor testova: Ilma.
-/// Testiraju se modeli Event, Newsletter i ErrorViewModel, te enumeracije EventType i NewsletterStatus.
-/// </summary>
 [TestClass]
 public class EventModelsTests
 {
@@ -23,7 +19,6 @@ public class EventModelsTests
         return new Event { EventName = "Koncert", EventDescription = "Opis", LocationAddress = "Zetra" };
     }
 
-    // ---------- Event ----------
 
     [TestMethod]
     [TestCategory("Model")]
@@ -48,9 +43,6 @@ public class EventModelsTests
         Assert.AreEqual(0, errors.Count);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): granične dužine naziva i adrese događaja.
-    /// </summary>
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]
@@ -117,7 +109,6 @@ public class EventModelsTests
         Assert.AreEqual("National Theatre", ev.LocationAddressEn);
     }
 
-    // ---------- Newsletter ----------
 
     [TestMethod]
     [TestCategory("Model")]
@@ -132,9 +123,6 @@ public class EventModelsTests
         Assert.AreEqual(string.Empty, newsletter.Subject);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): validacija naslova i sadržaja newslettera.
-    /// </summary>
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]
@@ -166,11 +154,6 @@ public class EventModelsTests
         Assert.AreEqual(1, newsletter.Id);
     }
 
-    // ---------- ErrorViewModel ----------
-
-    /// <summary>
-    /// Data-driven test (DataRow): ID zahtjeva se prikazuje samo kada postoji.
-    /// </summary>
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]
@@ -184,12 +167,6 @@ public class EventModelsTests
         Assert.AreEqual(ocekivano, model.ShowRequestId);
     }
 
-    // ---------- Enumeracije ----------
-
-    /// <summary>
-    /// Data-driven test (DataRow): brojčane vrijednosti tipova događaja su zapisane u bazi,
-    /// pa se ne smiju promijeniti.
-    /// </summary>
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]

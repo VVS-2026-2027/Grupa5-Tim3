@@ -7,10 +7,6 @@ using gosarajevovol3.ViewModels;
 
 namespace gosarajevovol3.Tests.Amna;
 
-/// <summary>
-/// Autor testova: Amna.
-/// Testiraju se modeli Hospitality, Attraction, Coordinates i Review te ReviewFormViewModel.
-/// </summary>
 [TestClass]
 public class HospitalityModelsTests
 {
@@ -26,9 +22,6 @@ public class HospitalityModelsTests
             ("duzinaUrlaSlike", typeof(int)), ("validno", typeof(bool)));
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz XML fajla (DynamicData): više slučajeva dodavanja novog objekta.
-    /// </summary>
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]

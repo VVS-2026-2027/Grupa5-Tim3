@@ -12,11 +12,6 @@ using Moq;
 
 namespace gosarajevovol3.Tests.Ilma;
 
-/// <summary>
-/// Autor testova: Ilma.
-/// Testira se OperatorController - pregled pretplatnika i slanje newslettera.
-/// Zamjenski objekti (Moq): IEmailService (ništa se stvarno ne šalje) i UserManager.
-/// </summary>
 [TestClass]
 public class OperatorControllerTests
 {
@@ -59,8 +54,6 @@ public class OperatorControllerTests
         _context.RegisteredUsers.RemoveRange(_context.RegisteredUsers);
         _context.SaveChanges();
     }
-
-    // ---------- OnActionExecutionAsync (provjera uloge) ----------
 
     [TestMethod]
     [TestCategory("Operator")]
@@ -122,7 +115,6 @@ public class OperatorControllerTests
         next.Verify(n => n(), Times.Never);
     }
 
-    // ---------- Index i CreateNewsletter ----------
 
     [TestMethod]
     [TestCategory("Operator")]
@@ -153,12 +145,6 @@ public class OperatorControllerTests
         Assert.IsInstanceOfType(_controller.CreateNewsletter(), typeof(ViewResult));
     }
 
-    // ---------- SendNewsletter ----------
-
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka):
-    /// newsletter se prihvata samo ako su popunjeni i naslov i sadržaj.
-    /// </summary>
     [TestMethod]
     [TestCategory("Operator")]
     [TestCategory("DataDriven")]

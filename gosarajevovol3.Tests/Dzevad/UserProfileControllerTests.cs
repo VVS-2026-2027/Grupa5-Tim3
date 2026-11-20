@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gosarajevovol3.Tests.Dzevad;
 
-/// <summary>
-/// Autor testova: Dževad.
-/// Testira se UserProfileController - stranica profila sa recenzijama i planovima korisnika.
-/// </summary>
 [TestClass]
 public class UserProfileControllerTests
 {
@@ -68,9 +64,6 @@ public class UserProfileControllerTests
         Assert.AreEqual("Account", result.ControllerName);
     }
 
-    /// <summary>
-    /// Data-driven test (DataRow): profil postoji samo za registrovane korisnike.
-    /// </summary>
     [TestMethod]
     [TestCategory("UserProfile")]
     [TestCategory("DataDriven")]

@@ -11,10 +11,6 @@ using Moq;
 
 namespace gosarajevovol3.Tests.Hana;
 
-/// <summary>
-/// Autor testova: Hana.
-/// Testira se SmartPlannerController - generisanje plana obilaska po danima.
-/// </summary>
 [TestClass]
 public class SmartPlannerControllerTests
 {
@@ -32,7 +28,6 @@ public class SmartPlannerControllerTests
         _context.RegisteredUsers.Add(new RegisteredUser { Id = 10, Email = RegisteredEmail, UserName = RegisteredEmail });
         _context.SaveChanges();
 
-        // Zamjenski objekat za konfiguraciju: umjesto fajla appsettings.json vraća testni ključ.
         _configMock = new Mock<IConfiguration>();
         _configMock.Setup(c => c["GoogleMaps:ApiKey"]).Returns(TestApiKey);
 
@@ -46,7 +41,6 @@ public class SmartPlannerControllerTests
         _context.Dispose();
     }
 
-    // ---------- pomoćne metode za pripremu podataka ----------
 
     private static SmartPlannerInputViewModel InputForDays(int days)
     {
@@ -100,7 +94,6 @@ public class SmartPlannerControllerTests
         _context.SaveChanges();
     }
 
-    /// <summary>Dovoljno podataka da se svaki dan može popuniti sa svih 5 lokacija.</summary>
     private void AddRichData()
     {
         AddAttractions(AttractionType.Historical, 4);
@@ -119,7 +112,6 @@ public class SmartPlannerControllerTests
         return (SmartPlannerResultViewModel)result.Model!;
     }
 
-    // ---------- Index ----------
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -168,7 +160,6 @@ public class SmartPlannerControllerTests
         _configMock.Verify(c => c["GoogleMaps:ApiKey"], Times.Once);
     }
 
-    // ---------- GenerirajPlan: provjere pristupa i unosa ----------
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -233,7 +224,6 @@ public class SmartPlannerControllerTests
         await _controller.GenerirajPlan(null!);
     }
 
-    // ---------- GenerirajPlan: rezultat ----------
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -386,7 +376,6 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(2, model.PlanByDay[1].Count(l => l.Type == "Historical"));
     }
 
-    // ---------- GenerirajPlan: događaji ----------
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -523,7 +512,6 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(30, model.PlanByDay.Count);
     }
 
-    // ---------- pomoćne metode kontrolera ----------
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -544,9 +532,6 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(ocekivano, limit);
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka).
-    /// </summary>
     [TestMethod]
     [TestCategory("SmartPlanner")]
     [TestCategory("DataDriven")]
@@ -576,9 +561,6 @@ public class SmartPlannerControllerTests
             ("ocekivano", typeof(double)), ("tolerancija", typeof(double)));
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz XML fajla (DynamicData).
-    /// </summary>
     [TestMethod]
     [TestCategory("SmartPlanner")]
     [TestCategory("DataDriven")]

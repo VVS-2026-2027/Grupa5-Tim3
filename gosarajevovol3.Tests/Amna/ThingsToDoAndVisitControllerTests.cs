@@ -8,11 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gosarajevovol3.Tests.Amna;
 
-/// <summary>
-/// Autor testova: Amna.
-/// Testiraju se ThingsToDoController, VisitController i InformationController
-/// (javne stranice sa listama ugostiteljskih objekata i atrakcija).
-/// </summary>
 [TestClass]
 public class ThingsToDoAndVisitControllerTests
 {
@@ -92,7 +87,6 @@ public class ThingsToDoAndVisitControllerTests
         };
     }
 
-    // ---------- ThingsToDoController ----------
 
     [TestMethod]
     [TestCategory("ThingsToDo")]
@@ -110,9 +104,6 @@ public class ThingsToDoAndVisitControllerTests
         Assert.AreEqual(1, ((List<Hospitality>)result.ViewData["Museums"]!).Count);
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka).
-    /// </summary>
     [TestMethod]
     [TestCategory("ThingsToDo")]
     [TestCategory("DataDriven")]
@@ -152,7 +143,6 @@ public class ThingsToDoAndVisitControllerTests
         Assert.IsInstanceOfType(result, typeof(NotFoundResult));
     }
 
-    // ---------- VisitController ----------
 
     [TestMethod]
     [TestCategory("Visit")]
@@ -166,10 +156,6 @@ public class ThingsToDoAndVisitControllerTests
         CollectionAssert.AllItemsAreNotNull(atrakcije.Select(a => a.Coordinates).ToList());
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka).
-    /// Nepoznat tip, tip malim slovima i prazan tip ne filtriraju ništa.
-    /// </summary>
     [TestMethod]
     [TestCategory("Visit")]
     [TestCategory("DataDriven")]
@@ -215,7 +201,6 @@ public class ThingsToDoAndVisitControllerTests
         Assert.IsInstanceOfType(result, typeof(NotFoundResult));
     }
 
-    // ---------- InformationController ----------
 
     [TestMethod]
     [TestCategory("Information")]

@@ -12,10 +12,6 @@ using System.Security.Claims;
 
 namespace gosarajevovol3.Tests.Amna;
 
-/// <summary>
-/// Autor testova: Amna.
-/// Testira se AdminController - administratorska ploča i upravljanje atrakcijama i objektima.
-/// </summary>
 [TestClass]
 public class AdminControllerTests
 {
@@ -47,7 +43,6 @@ public class AdminControllerTests
         });
         _context.SaveChanges();
 
-        // Zamjenski objekat za UserManager: ne koristi se prava baza korisnika.
         _userManagerMock = TestHelper.MockUserManager();
         _controller = new AdminController(_context, _userManagerMock.Object);
         TestHelper.SetUser(_controller, "admin@test.ba");
@@ -93,7 +88,6 @@ public class AdminControllerTests
         Assert.AreEqual("Dashboard", redirect.ActionName);
     }
 
-    // ---------- provjera prava pristupa (zamjenski objekat) ----------
 
     [TestMethod]
     [TestCategory("Admin")]
@@ -155,7 +149,6 @@ public class AdminControllerTests
         next.Verify(n => n(), Times.Never);
     }
 
-    // ---------- Dashboard ----------
 
     [TestMethod]
     [TestCategory("Admin")]
@@ -179,7 +172,6 @@ public class AdminControllerTests
         Assert.AreEqual("k@test.ba", ((List<Review>)result.ViewData["Reviews"]!)[0].RegisteredUser.Email);
     }
 
-    // ---------- atrakcije ----------
 
     [TestMethod]
     [TestCategory("Admin")]
@@ -320,7 +312,6 @@ public class AdminControllerTests
         Assert.AreEqual(1, _context.Attractions.Count());
     }
 
-    // ---------- ugostiteljski objekti ----------
 
     [TestMethod]
     [TestCategory("Admin")]

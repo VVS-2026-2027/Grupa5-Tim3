@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace gosarajevovol3.Tests.Amna;
 
-/// <summary>
-/// Autor testova: Amna.
-/// Testira se ReviewController - ostavljanje, izmjena i brisanje recenzija.
-/// </summary>
 [TestClass]
 public class ReviewControllerTests
 {
@@ -66,7 +62,6 @@ public class ReviewControllerTests
         Assert.AreEqual("Account", redirect.ControllerName);
     }
 
-    // ---------- Leave (GET) ----------
 
     [TestMethod]
     [TestCategory("Review")]
@@ -141,7 +136,6 @@ public class ReviewControllerTests
         Assert.AreEqual(0, model.Rating);
     }
 
-    // ---------- Leave (POST) ----------
 
     [TestMethod]
     [TestCategory("Review")]
@@ -280,7 +274,6 @@ public class ReviewControllerTests
         await _controller.Leave((ReviewFormViewModel)null!);
     }
 
-    // ---------- Delete ----------
 
     [TestMethod]
     [TestCategory("Review")]

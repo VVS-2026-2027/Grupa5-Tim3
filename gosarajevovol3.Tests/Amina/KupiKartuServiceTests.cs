@@ -40,7 +40,6 @@ public class KupiKartuServiceTests
         _context.Dispose();
     }
 
-    /// <summary>Lažna stranica: jedna kategorija koncerata sa jednim događajem u Sarajevu.</summary>
     private void AddSiteWithOneEvent(string lokacija = "Zetra, Sarajevo")
     {
         _handler.AddResponse("/karte/event/7",
@@ -50,7 +49,6 @@ public class KupiKartuServiceTests
         _handler.AddResponse("kupikartu.ba", "<a href='/karte/kategorija/2'>Koncerti</a>");
     }
 
-    /// <summary>Pokreće servis, čeka prvo čitanje stranice i zaustavlja ga.</summary>
     private async Task RunServiceOnceAsync()
     {
         await _service.StartAsync(CancellationToken.None);

@@ -15,15 +15,6 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace gosarajevovol3.Tests.Dzevad;
 
-/// <summary>
-/// Autor testova: Dževad.
-/// Testira se AccountController - prijava, odjava, registracija i reset lozinke.
-/// Zamjenski objekti (Moq):
-///  - IUserService (prijava i odjava),
-///  - UserManager (traženje korisnika, kreiranje, reset lozinke),
-///  - IEmailService (slanje e-maila - u testu se ništa stvarno ne šalje),
-///  - IUrlHelper (pravljenje linka za reset lozinke).
-/// </summary>
 [TestClass]
 public class AccountControllerTests
 {
@@ -89,7 +80,6 @@ public class AccountControllerTests
         return WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
     }
 
-    // ---------- Login (GET) ----------
 
     [TestMethod]
     [TestCategory("Account")]
@@ -111,7 +101,6 @@ public class AccountControllerTests
         Assert.AreEqual("ProfileRoute", result!.ActionName);
     }
 
-    // ---------- Login (POST) ----------
 
     [TestMethod]
     [TestCategory("Account")]
@@ -140,10 +129,6 @@ public class AccountControllerTests
         Assert.AreEqual("Invalid email or password", _controller.ModelState[""]!.Errors.Single().ErrorMessage);
     }
 
-    /// <summary>
-    /// Data-driven test sa podacima iz CSV fajla (izvor podataka):
-    /// nakon uspješne prijave svaka vrsta korisnika ide na svoju početnu stranicu.
-    /// </summary>
     [TestMethod]
     [TestCategory("Account")]
     [TestCategory("DataDriven")]
@@ -179,7 +164,6 @@ public class AccountControllerTests
         await _controller.Login(null!);
     }
 
-    // ---------- Logout i SwitchAccount ----------
 
     [TestMethod]
     [TestCategory("Account")]
@@ -204,7 +188,6 @@ public class AccountControllerTests
         Assert.AreEqual("Login", result!.ActionName);
     }
 
-    // ---------- ProfileRoute ----------
 
     [TestMethod]
     [TestCategory("Account")]
@@ -227,9 +210,6 @@ public class AccountControllerTests
         Assert.AreEqual("Login", result!.ActionName);
     }
 
-    /// <summary>
-    /// Data-driven test sa istim CSV fajlom: prijavljeni korisnik ide na stranicu svoje uloge.
-    /// </summary>
     [TestMethod]
     [TestCategory("Account")]
     [TestCategory("DataDriven")]
@@ -245,7 +225,6 @@ public class AccountControllerTests
         Assert.AreEqual(ocekivaniKontroler, result.ControllerName);
     }
 
-    // ---------- Jednostavne GET akcije ----------
 
     [TestMethod]
     [TestCategory("Account")]
@@ -268,7 +247,6 @@ public class AccountControllerTests
         Assert.IsInstanceOfType(_controller.ResetPasswordConfirmation(), typeof(ViewResult));
     }
 
-    // ---------- ForgotPassword (POST) ----------
 
     [TestMethod]
     [TestCategory("Account")]
@@ -377,11 +355,6 @@ public class AccountControllerTests
         Assert.AreEqual("Failed to send email: nema mreze", _controller.ModelState[""]!.Errors.Single().ErrorMessage);
     }
 
-    // ---------- ResetPassword (GET) ----------
-
-    /// <summary>
-    /// Data-driven test (DataRow): link bez tokena ili bez e-maila vodi nazad na prijavu.
-    /// </summary>
     [TestMethod]
     [TestCategory("Account")]
     [TestCategory("DataDriven")]
@@ -407,7 +380,6 @@ public class AccountControllerTests
         Assert.AreEqual("korisnik@test.ba", model.Email);
     }
 
-    // ---------- ResetPassword (POST) ----------
 
     private static ResetPasswordViewModel ResetModel(string token)
     {
@@ -433,7 +405,6 @@ public class AccountControllerTests
     [TestCategory("Account")]
     public async Task ResetPasswordPost_NalogNePostoji_IpakPreusmjeravaNaPotvrdu()
     {
-        // Namjerno isto ponašanje kao kod uspjeha: ne otkriva se da li nalog postoji.
         _userManagerMock.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync((User?)null);
 
         var result = await _controller.ResetPassword(ResetModel(Encode("TOKEN"))) as RedirectToActionResult;
@@ -488,7 +459,6 @@ public class AccountControllerTests
             _controller.ModelState[""]!.Errors.Select(e => e.ErrorMessage).ToList());
     }
 
-    // ---------- Register (POST) ----------
 
     private static RegisterViewModel RegisterModel()
     {

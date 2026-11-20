@@ -8,12 +8,6 @@ using Moq;
 
 namespace gosarajevovol3.Tests.Ilma;
 
-/// <summary>
-/// Autor testova: Ilma.
-/// Testira se NPSService - pozadinski servis koji predstave sa nps.ba upisuje u bazu.
-/// Zamjenski objekti: Mock IEventTranslator (umjesto Google prevodioca),
-/// Mock IServiceScopeFactory (daje bazu u memoriji) i FakeHttpMessageHandler (umjesto interneta).
-/// </summary>
 [TestClass]
 public class NPSServiceTests
 {
@@ -42,7 +36,6 @@ public class NPSServiceTests
         _context.Dispose();
     }
 
-    /// <summary>Lažni repertoar sa dvije predstave.</summary>
     private void AddRepertoireWithTwoPlays()
     {
         _handler.AddResponse("/repertoar/hasanaginica", "<html><body><h1>Drama Hasanaginica</h1></body></html>");
@@ -50,7 +43,6 @@ public class NPSServiceTests
         _handler.AddResponse("nps.ba/repertoar", "<a href='/repertoar/hasanaginica'>A</a><a href='/repertoar/ero'>B</a>");
     }
 
-    /// <summary>Pokreće servis, čeka prvo čitanje repertoara i zaustavlja ga.</summary>
     private async Task RunServiceOnceAsync()
     {
         await _service.StartAsync(CancellationToken.None);
