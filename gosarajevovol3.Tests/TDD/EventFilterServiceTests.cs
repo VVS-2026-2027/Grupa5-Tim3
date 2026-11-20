@@ -68,4 +68,58 @@ public class EventFilterServiceTests
     {
         _service.FilterByType(null!, EventType.Concert);
     }
+
+    // ---------- Ciklus 4: filtriranje po periodu (test napisala: Amina) ----------
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    public void FilterByDateRange_PeriodObuhvataDvaDogadjaja_VracaIhOdNajranijeg()
+    {
+        var result = _service.FilterByDateRange(_events, new DateTime(2026, 3, 1), new DateTime(2026, 6, 30));
+
+        CollectionAssert.AreEqual(new[] { 2, 3 }, Ids(result));
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    public void FilterByDateRange_DogadjajiTacnoNaGranicama_GraniceSuUkljucene()
+    {
+        var result = _service.FilterByDateRange(_events, new DateTime(2026, 1, 20), new DateTime(2026, 3, 10));
+
+        CollectionAssert.AreEqual(new[] { 4, 2 }, Ids(result));
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    public void FilterByDateRange_PocetakIKrajSuIstiDan_VracaDogadjajTogDana()
+    {
+        var result = _service.FilterByDateRange(_events, new DateTime(2026, 6, 1), new DateTime(2026, 6, 1));
+
+        CollectionAssert.AreEqual(new[] { 3 }, Ids(result));
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    public void FilterByDateRange_PeriodBezDogadjaja_VracaPraznuListu()
+    {
+        var result = _service.FilterByDateRange(_events, new DateTime(2027, 1, 1), new DateTime(2027, 12, 31));
+
+        Assert.AreEqual(0, result.Count);
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [ExpectedException(typeof(ArgumentException))]
+    public void FilterByDateRange_PocetakJeNakonKraja_BacaArgumentException()
+    {
+        _service.FilterByDateRange(_events, new DateTime(2026, 6, 30), new DateTime(2026, 3, 1));
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void FilterByDateRange_ListaJeNull_BacaArgumentNullException()
+    {
+        _service.FilterByDateRange(null!, new DateTime(2026, 1, 1), new DateTime(2026, 12, 31));
+    }
 }

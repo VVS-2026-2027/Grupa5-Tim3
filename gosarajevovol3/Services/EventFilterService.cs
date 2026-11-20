@@ -22,4 +22,12 @@ public class EventFilterService
             .OrderBy(ev => ev.StartDate)
             .ToList();
     }
+
+    /// <summary>
+    /// Događaji koji počinju u zadanom periodu (obje granice su uključene).
+    /// </summary>
+    public List<Event> FilterByDateRange(IEnumerable<Event> events, DateTime from, DateTime to)
+    {
+        throw new NotImplementedException();
+    }
 }
