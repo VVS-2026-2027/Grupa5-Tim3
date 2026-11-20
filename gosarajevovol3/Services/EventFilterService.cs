@@ -19,10 +19,7 @@ public class EventFilterService
     {
         ArgumentNullException.ThrowIfNull(events);
 
-        return events
-            .Where(ev => type == null || ev.Type == type)
-            .OrderBy(ev => ev.StartDate)
-            .ToList();
+        return ToOrderedList(events.Where(ev => type == null || ev.Type == type));
     }
 
     /// <summary>
@@ -33,10 +30,7 @@ public class EventFilterService
         ArgumentNullException.ThrowIfNull(events);
         EnsureValidPeriod(from, to);
 
-        return events
-            .Where(ev => ev.StartDate >= from && ev.StartDate <= to)
-            .OrderBy(ev => ev.StartDate)
-            .ToList();
+        return ToOrderedList(events.Where(ev => ev.StartDate >= from && ev.StartDate <= to));
     }
 
     /// <summary>
@@ -49,15 +43,11 @@ public class EventFilterService
 
         if (string.IsNullOrWhiteSpace(text))
         {
-            return events.OrderBy(ev => ev.StartDate).ToList();
+            return ToOrderedList(events);
         }
 
         string wanted = text.Trim();
-        return events
-            .Where(ev => ev.EventName.Contains(wanted, StringComparison.OrdinalIgnoreCase)
-                         || (ev.EventNameEn != null && ev.EventNameEn.Contains(wanted, StringComparison.OrdinalIgnoreCase)))
-            .OrderBy(ev => ev.StartDate)
-            .ToList();
+        return ToOrderedList(events.Where(ev => NameContains(ev.EventName, wanted) || NameContains(ev.EventNameEn, wanted)));
     }
 
     private static void EnsureValidPeriod(DateTime from, DateTime to)
@@ -66,5 +56,15 @@ public class EventFilterService
         {
             throw new ArgumentException(InvalidPeriodMessage);
         }
+    }
+
+    private static List<Event> ToOrderedList(IEnumerable<Event> events)
+    {
+        return events.OrderBy(ev => ev.StartDate).ToList();
+    }
+
+    private static bool NameContains(string? name, string wanted)
+    {
+        return name != null && name.Contains(wanted, StringComparison.OrdinalIgnoreCase);
     }
 }
