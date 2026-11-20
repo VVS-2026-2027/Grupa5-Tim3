@@ -10,6 +10,8 @@ namespace gosarajevovol3.Services;
 /// </summary>
 public class EventFilterService
 {
+    private const string InvalidPeriodMessage = "Start of the period must not be after its end.";
+
     /// <summary>
     /// Događaji zadanog tipa. Ako tip nije zadan (null), vraćaju se svi događaji.
     /// </summary>
@@ -28,18 +30,20 @@ public class EventFilterService
     /// </summary>
     public List<Event> FilterByDateRange(IEnumerable<Event> events, DateTime from, DateTime to)
     {
-        if (events == null)
-        {
-            throw new ArgumentNullException(nameof(events));
-        }
-        if (from > to)
-        {
-            throw new ArgumentException("Start of the period must not be after its end.");
-        }
+        ArgumentNullException.ThrowIfNull(events);
+        EnsureValidPeriod(from, to);
 
         return events
             .Where(ev => ev.StartDate >= from && ev.StartDate <= to)
             .OrderBy(ev => ev.StartDate)
             .ToList();
+    }
+
+    private static void EnsureValidPeriod(DateTime from, DateTime to)
+    {
+        if (from > to)
+        {
+            throw new ArgumentException(InvalidPeriodMessage);
+        }
     }
 }
