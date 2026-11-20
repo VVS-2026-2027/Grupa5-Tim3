@@ -15,21 +15,11 @@ public class EventFilterService
     /// </summary>
     public List<Event> FilterByType(IEnumerable<Event> events, EventType? type)
     {
-        if (events == null)
-        {
-            throw new ArgumentNullException(nameof(events));
-        }
+        ArgumentNullException.ThrowIfNull(events);
 
-        var result = new List<Event>();
-        foreach (var ev in events)
-        {
-            if (type == null || ev.Type == type)
-            {
-                result.Add(ev);
-            }
-        }
-
-        result.Sort((first, second) => first.StartDate.CompareTo(second.StartDate));
-        return result;
+        return events
+            .Where(ev => type == null || ev.Type == type)
+            .OrderBy(ev => ev.StartDate)
+            .ToList();
     }
 }
