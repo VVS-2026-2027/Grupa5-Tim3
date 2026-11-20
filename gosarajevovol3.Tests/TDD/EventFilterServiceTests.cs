@@ -122,4 +122,41 @@ public class EventFilterServiceTests
     {
         _service.FilterByDateRange(null!, new DateTime(2026, 1, 1), new DateTime(2026, 12, 31));
     }
+
+    // ---------- Ciklus 5: pretraga po nazivu (test napisao: Dževad) ----------
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [DataRow("festival", new[] { 1 }, DisplayName = "Mala slova u pretrazi")]
+    [DataRow("JAZZ", new[] { 4 }, DisplayName = "Velika slova u pretrazi")]
+    [DataRow("night", new[] { 4 }, DisplayName = "Riječ postoji samo u engleskom nazivu")]
+    [DataRow("  merlin  ", new[] { 3 }, DisplayName = "Razmaci oko teksta se zanemaruju")]
+    [DataRow("a", new[] { 4, 2, 3, 1 }, DisplayName = "Više rezultata, od najranijeg")]
+    [DataRow("opera", new int[0], DisplayName = "Nema rezultata")]
+    public void Search_TekstPretrage_VracaDogadjajeCijiNazivSadrziTekst(string tekst, int[] ocekivaniIds)
+    {
+        var result = _service.Search(_events, tekst);
+
+        CollectionAssert.AreEqual(ocekivaniIds, Ids(result));
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [DataRow(null, DisplayName = "Tekst je null")]
+    [DataRow("", DisplayName = "Tekst je prazan")]
+    [DataRow("   ", DisplayName = "Tekst su samo razmaci")]
+    public void Search_PrazanTekst_VracaSveDogadjajeOdNajranijeg(string? tekst)
+    {
+        var result = _service.Search(_events, tekst);
+
+        CollectionAssert.AreEqual(new[] { 4, 2, 3, 1 }, Ids(result));
+    }
+
+    [TestMethod]
+    [TestCategory("TDD")]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void Search_ListaJeNull_BacaArgumentNullException()
+    {
+        _service.Search(null!, "festival");
+    }
 }

@@ -39,6 +39,15 @@ public class EventFilterService
             .ToList();
     }
 
+    /// <summary>
+    /// Pretraga po nazivu događaja (bosanski ili engleski naziv), bez razlike velikih i malih slova.
+    /// Prazan tekst pretrage vraća sve događaje.
+    /// </summary>
+    public List<Event> Search(IEnumerable<Event> events, string? text)
+    {
+        throw new NotImplementedException();
+    }
+
     private static void EnsureValidPeriod(DateTime from, DateTime to)
     {
         if (from > to)
