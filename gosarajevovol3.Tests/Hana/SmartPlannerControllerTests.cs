@@ -41,7 +41,6 @@ public class SmartPlannerControllerTests
         _context.Dispose();
     }
 
-
     private static SmartPlannerInputViewModel InputForDays(int days)
     {
         return new SmartPlannerInputViewModel
@@ -112,7 +111,6 @@ public class SmartPlannerControllerTests
         return (SmartPlannerResultViewModel)result.Model!;
     }
 
-
     [TestMethod]
     [TestCategory("SmartPlanner")]
     public void Index_NeprijavljenKorisnik_VracaNotRegisteredView()
@@ -159,7 +157,6 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(TestApiKey, result!.ViewData["GoogleMapsApiKey"]);
         _configMock.Verify(c => c["GoogleMaps:ApiKey"], Times.Once);
     }
-
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -223,7 +220,6 @@ public class SmartPlannerControllerTests
     {
         await _controller.GenerirajPlan(null!);
     }
-
 
     [TestMethod]
     [TestCategory("SmartPlanner")]
@@ -376,7 +372,6 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(2, model.PlanByDay[1].Count(l => l.Type == "Historical"));
     }
 
-
     [TestMethod]
     [TestCategory("SmartPlanner")]
     public async Task GenerirajPlan_VecernjiKoncertNaDanDolaska_KoncertJeNaKrajuPrvogDana()
@@ -512,7 +507,6 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(30, model.PlanByDay.Count);
     }
 
-
     [TestMethod]
     [TestCategory("SmartPlanner")]
     [DataRow("Nature", 5, 2, DisplayName = "Priroda sa visokom ocjenom - dvije dnevno")]
@@ -553,18 +547,10 @@ public class SmartPlannerControllerTests
         Assert.AreEqual(ocekivano, slots);
     }
 
-    public static IEnumerable<object?[]> HaversinePodaci()
-    {
-        return XmlTestData.Read("hana_haversine.xml",
-            ("lat1", typeof(double)), ("lon1", typeof(double)),
-            ("lat2", typeof(double)), ("lon2", typeof(double)),
-            ("ocekivano", typeof(double)), ("tolerancija", typeof(double)));
-    }
-
     [TestMethod]
     [TestCategory("SmartPlanner")]
     [TestCategory("DataDriven")]
-    [DynamicData(nameof(HaversinePodaci), DynamicDataSourceType.Method)]
+    [XmlDataSource("hana_haversine.xml", "lat1", "lon1", "lat2", "lon2", "ocekivano", "tolerancija")]
     public void Haversine_KoordinateIzXmlFajla_VracaUdaljenostUMetrima(
         double lat1, double lon1, double lat2, double lon2, double ocekivano, double tolerancija)
     {

@@ -22,8 +22,7 @@
         <naziv>Name Unknown</naziv>
         <adresa>Bosanski kulturni centar</adresa>
         <slika></slika>
-        <opisDogadjaja>Prvi red.
-            Drugi red.</opisDogadjaja>
+        <opisDogadjaja>Prvi red.&#10;Drugi red.</opisDogadjaja>
     </slucaj>
     <slucaj>
         <opis>Slika u rezervnom obliku (img sa klasom image)</opis>

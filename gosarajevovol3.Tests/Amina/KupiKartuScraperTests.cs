@@ -27,7 +27,6 @@ public class KupiKartuScraperTests
         return $"<html><body><h1>{naziv}</h1><p>{datum}</p><p>{lokacija}</p></body></html>";
     }
 
-
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     public async Task GetHamburgerMenuUrls_StranicaSaKategorijama_VracaPuneAdrese()
@@ -110,7 +109,6 @@ public class KupiKartuScraperTests
         Assert.AreEqual(0, urls.Count);
     }
 
-
   
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
@@ -123,19 +121,10 @@ public class KupiKartuScraperTests
         Assert.AreEqual(ocekivaniTip, tip);
     }
 
-
-    public static IEnumerable<object?[]> DogadjajiIzXmlFajla()
-    {
-        return XmlTestData.Read("amina_dogadjaji.xml",
-            ("html", typeof(string)), ("naziv", typeof(string)), ("adresa", typeof(string)),
-            ("slika", typeof(string)), ("opisDogadjaja", typeof(string)));
-    }
-
-
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]
-    [DynamicData(nameof(DogadjajiIzXmlFajla), DynamicDataSourceType.Method)]
+    [XmlDataSource("amina_dogadjaji.xml", "html", "naziv", "adresa", "slika", "opisDogadjaja")]
     public async Task ScrapeEvents_StranicaIzXmlFajla_IzvlaciPodatkeODogadjaju(
         string html, string naziv, string adresa, string slika, string opisDogadjaja)
     {
@@ -164,13 +153,18 @@ public class KupiKartuScraperTests
     }
 
    
+    public static IEnumerable<object?[]> IspravniZapisiDatuma => new[]
+    {
+        new object?[] { "15/03", 15, 3 },
+        new object?[] { "15-17/03", 15, 3 },
+        new object?[] { " 01 - 05/12 ", 1, 12 },
+        new object?[] { "31/12", 31, 12 },
+    };
+
     [TestMethod]
     [TestCategory("KupiKartuScraper")]
     [TestCategory("DataDriven")]
-    [DataRow("15/03", 15, 3, DisplayName = "Jedan dan")]
-    [DataRow("15-17/03", 15, 3, DisplayName = "Raspon dana: uzima se prvi dan")]
-    [DataRow(" 01 - 05/12 ", 1, 12, DisplayName = "Raspon sa razmacima")]
-    [DataRow("31/12", 31, 12, DisplayName = "Posljednji dan u godini")]
+    [DynamicData(nameof(IspravniZapisiDatuma))]
     public async Task ScrapeEvents_IspravanZapisDatuma_PostavljaDanIMjesec(string datum, int dan, int mjesec)
     {
         _handler.AddResponse("/karte/event/", EventPage(datum, "Zetra, Sarajevo"));
@@ -248,7 +242,6 @@ public class KupiKartuScraperTests
 
         Assert.AreEqual(EventType.Theater, ev!.Type);
     }
-
 
     [TestMethod]
     [TestCategory("KupiKartuScraper")]

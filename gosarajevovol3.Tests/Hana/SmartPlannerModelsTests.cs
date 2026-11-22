@@ -31,15 +31,20 @@ public class SmartPlannerModelsTests
         Assert.IsNull(model.StartLng);
     }
 
+    public static IEnumerable<object?[]> ParoviOdgovora => new[]
+    {
+        new object?[] { 1, 1, 1 },
+        new object?[] { 1, 2, 2 },
+        new object?[] { 2, 3, 2 },
+        new object?[] { 3, 4, 4 },
+        new object?[] { 4, 5, 4 },
+        new object?[] { 5, 5, 5 },
+        new object?[] { 1, 5, 3 },
+    };
+
     [TestMethod]
     [TestCategory("ViewModel")]
-    [DataRow(1, 1, 1)]
-    [DataRow(1, 2, 2)]
-    [DataRow(2, 3, 2)]
-    [DataRow(3, 4, 4)]
-    [DataRow(4, 5, 4)]
-    [DataRow(5, 5, 5)]
-    [DataRow(1, 5, 3)]
+    [DynamicData(nameof(ParoviOdgovora))]
     public void SmartPlannerInputViewModel_DvaOdgovora_RezultatJeZaokruzeniProsjek(int q1, int q2, int ocekivano)
     {
         var model = new SmartPlannerInputViewModel

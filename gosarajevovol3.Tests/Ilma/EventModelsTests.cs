@@ -167,14 +167,19 @@ public class EventModelsTests
         Assert.AreEqual(ocekivano, model.ShowRequestId);
     }
 
+    public static IEnumerable<object?[]> TipoviDogadjaja => new[]
+    {
+        new object?[] { EventType.Concert, 0 },
+        new object?[] { EventType.Theater, 1 },
+        new object?[] { EventType.Movie, 2 },
+        new object?[] { EventType.Festival, 3 },
+        new object?[] { EventType.Other, 4 },
+    };
+
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]
-    [DataRow(EventType.Concert, 0)]
-    [DataRow(EventType.Theater, 1)]
-    [DataRow(EventType.Movie, 2)]
-    [DataRow(EventType.Festival, 3)]
-    [DataRow(EventType.Other, 4)]
+    [DynamicData(nameof(TipoviDogadjaja))]
     public void EventType_SvakiTip_ImaStalnuBrojcanuVrijednost(EventType tip, int ocekivanaVrijednost)
     {
         Assert.AreEqual(ocekivanaVrijednost, (int)tip);

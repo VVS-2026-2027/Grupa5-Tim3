@@ -74,17 +74,10 @@ public class NPSScraperTests
         Assert.AreEqual(0, urls.Count);
     }
 
-
-    public static IEnumerable<object?[]> PredstaveIzXmlFajla()
-    {
-        return XmlTestData.Read("ilma_predstave.xml",
-            ("html", typeof(string)), ("naziv", typeof(string)), ("slika", typeof(string)), ("opisPredstave", typeof(string)));
-    }
-
     [TestMethod]
     [TestCategory("NPSScraper")]
     [TestCategory("DataDriven")]
-    [DynamicData(nameof(PredstaveIzXmlFajla), DynamicDataSourceType.Method)]
+    [XmlDataSource("ilma_predstave.xml", "html", "naziv", "slika", "opisPredstave")]
     public async Task ScrapePlayDetails_StranicaIzXmlFajla_IzvlaciNazivSlikuIOpis(
         string html, string naziv, string slika, string opisPredstave)
     {
@@ -184,7 +177,6 @@ public class NPSScraperTests
 
         Assert.AreEqual("Prvi dio teksta. Drugi dio.", ev!.EventDescription);
     }
-
 
     [TestMethod]
     [TestCategory("NPSScraper")]

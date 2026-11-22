@@ -15,17 +15,10 @@ public class HospitalityModelsTests
         return Validator.TryValidateObject(model, new ValidationContext(model), new List<ValidationResult>(), true);
     }
 
-    public static IEnumerable<object?[]> ObjektiIzXmlFajla()
-    {
-        return XmlTestData.Read("amna_validacija_objekata.xml",
-            ("naziv", typeof(string)), ("opisObjekta", typeof(string)), ("adresa", typeof(string)),
-            ("duzinaUrlaSlike", typeof(int)), ("validno", typeof(bool)));
-    }
-
     [TestMethod]
     [TestCategory("Model")]
     [TestCategory("DataDriven")]
-    [DynamicData(nameof(ObjektiIzXmlFajla), DynamicDataSourceType.Method)]
+    [XmlDataSource("amna_validacija_objekata.xml", "naziv", "opisObjekta", "adresa", "duzinaUrlaSlike", "validno")]
     public void Hospitality_PodaciIzXmlFajla_ValidacijaDajeOcekivaniRezultat(
         string naziv, string opis, string adresa, int duzinaUrlaSlike, bool ocekivano)
     {
@@ -94,12 +87,17 @@ public class HospitalityModelsTests
         Assert.AreEqual(18.4131, koordinate.Longitude);
     }
 
+    public static IEnumerable<object?[]> OcjeneRecenzije => new[]
+    {
+        new object?[] { 0, false },
+        new object?[] { 1, true },
+        new object?[] { 5, true },
+        new object?[] { 6, false },
+    };
+
     [TestMethod]
     [TestCategory("Model")]
-    [DataRow(0, false)]
-    [DataRow(1, true)]
-    [DataRow(5, true)]
-    [DataRow(6, false)]
+    [DynamicData(nameof(OcjeneRecenzije))]
     public void Review_Ocjena_ValidnaSamoIzmedjuJedanIPet(int ocjena, bool ocekivano)
     {
         var recenzija = new Review { Rating = ocjena, Comment = "Komentar", RegisteredUser = new RegisteredUser() };

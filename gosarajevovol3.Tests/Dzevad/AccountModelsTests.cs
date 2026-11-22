@@ -15,17 +15,10 @@ public class AccountModelsTests
         return results;
     }
 
-
-    public static IEnumerable<object?[]> RegistracijeIzXmlFajla()
-    {
-        return XmlTestData.Read("dzevad_registracija.xml",
-            ("email", typeof(string)), ("lozinka", typeof(string)), ("potvrda", typeof(string)), ("validno", typeof(bool)));
-    }
-
     [TestMethod]
     [TestCategory("ViewModel")]
     [TestCategory("DataDriven")]
-    [DynamicData(nameof(RegistracijeIzXmlFajla), DynamicDataSourceType.Method)]
+    [XmlDataSource("dzevad_registracija.xml", "email", "lozinka", "potvrda", "validno")]
     public void RegisterViewModel_PodaciIzXmlFajla_ValidacijaDajeOcekivaniRezultat(
         string email, string lozinka, string potvrda, bool ocekivano)
     {
@@ -96,7 +89,6 @@ public class AccountModelsTests
         Assert.IsTrue(model.RememberMe);
     }
 
-
     [TestMethod]
     [TestCategory("ViewModel")]
     [TestCategory("DataDriven")]
@@ -112,14 +104,19 @@ public class AccountModelsTests
         Assert.AreEqual(ocekivano, errors.Count == 0);
     }
 
+    public static IEnumerable<object?[]> UnosiZaResetLozinke => new[]
+    {
+        new object?[] { "token", "korisnik@test.ba", "Nova123", "Nova123", true },
+        new object?[] { "", "korisnik@test.ba", "Nova123", "Nova123", false },
+        new object?[] { "token", "nije-email", "Nova123", "Nova123", false },
+        new object?[] { "token", "korisnik@test.ba", "abc", "abc", false },
+        new object?[] { "token", "korisnik@test.ba", "Nova123", "Nova124", false },
+    };
+
     [TestMethod]
     [TestCategory("ViewModel")]
     [TestCategory("DataDriven")]
-    [DataRow("token", "korisnik@test.ba", "Nova123", "Nova123", true, DisplayName = "Svi podaci ispravni")]
-    [DataRow("", "korisnik@test.ba", "Nova123", "Nova123", false, DisplayName = "Nema tokena")]
-    [DataRow("token", "nije-email", "Nova123", "Nova123", false, DisplayName = "Neispravan e-mail")]
-    [DataRow("token", "korisnik@test.ba", "abc", "abc", false, DisplayName = "Prekratka lozinka")]
-    [DataRow("token", "korisnik@test.ba", "Nova123", "Nova124", false, DisplayName = "Potvrda se razlikuje")]
+    [DynamicData(nameof(UnosiZaResetLozinke))]
     public void ResetPasswordViewModel_Unos_ValidacijaDajeOcekivaniRezultat(
         string token, string email, string lozinka, string potvrda, bool ocekivano)
     {
@@ -141,7 +138,6 @@ public class AccountModelsTests
         Assert.AreEqual("The password must be at least 6 characters long.", errors.Single().ErrorMessage);
     }
 
-
     [TestMethod]
     [TestCategory("ViewModel")]
     public void ProfileViewModel_NoviObjekat_ImaPrazneListeIPrazanEmail()
@@ -152,7 +148,6 @@ public class AccountModelsTests
         Assert.AreEqual(0, model.Reviews.Count);
         Assert.AreEqual(0, model.Plans.Count);
     }
-
 
     [TestMethod]
     [TestCategory("Model")]
