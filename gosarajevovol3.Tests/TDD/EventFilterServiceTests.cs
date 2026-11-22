@@ -32,7 +32,7 @@ public class EventFilterServiceTests
         return events.Select(ev => ev.Id).ToList();
     }
 
-    // ---------- Ciklus 3: filtriranje po tipu (test napisala: Amna) ----------
+    // ---------- Ciklus 3: filtriranje po tipu (test napisala: Ilma) ----------
 
     [TestMethod]
     [TestCategory("TDD")]
@@ -69,7 +69,7 @@ public class EventFilterServiceTests
         _service.FilterByType(null!, EventType.Concert);
     }
 
-    // ---------- Ciklus 4: filtriranje po periodu (test napisala: Amina) ----------
+    // ---------- Ciklus 4: filtriranje po periodu (test napisala: Hana) ----------
 
     [TestMethod]
     [TestCategory("TDD")]
