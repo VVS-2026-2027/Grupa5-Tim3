@@ -1,0 +1,153 @@
+﻿@model SakuraWeb.Models.Proizvod
+
+@{
+    ViewData["Title"] = "Proizvod";
+}
+
+@if (User.IsInRole("Administrator"))
+{
+    <partial name="_AdminNavPartial"></partial>
+    <div class="shadow-lg rounded-4 p-4 sakura-lightgray-bg mb-4 mt-4 container" style="width:60%;">
+    <h2 class="mb-4 admin-panel-heading">Detalji o proizvodu</h2>
+
+    <div class="">
+        <div class="col-md-8">
+            <dl class="row mt-3">
+                <dt class="col-sm-2">
+                    Naziv
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.naziv)
+                </dd>
+                <dt class="col-sm-2">
+                    Cijena
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.cijena)
+                </dd>
+                <dt class="col-sm-2">
+                    Kategorija
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.kategorija)
+                </dd>
+                <dt class="col-sm-2">
+                    Volumen
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.volumen)
+                </dd>
+                <dt class="col-sm-2">
+                    Benefiti
+                </dt>
+                <dd class="col-sm-10">
+                    @{
+                        var benefiti = (List<SakuraWeb.Models.Benefit>)ViewData["ProizvodBenefiti"]!;
+                    }
+                    @if (benefiti.Any())
+                    {
+                        @string.Join(", ", benefiti.Select(b => b.opis))
+                    }
+                    else
+                    {
+                        <span>—</span>
+                    }
+                </dd>
+                <dt class="col-sm-2">
+                    Sastojci
+                </dt>
+                <dd class="col-sm-10">
+                    @if (Model.ProizvodSastojci.Any())
+                    {
+                        @string.Join(", ", Model.ProizvodSastojci.Select(ps => ps.sastojak.naziv))
+                    }
+                    else
+                    {
+                        <span>—</span>
+                    }
+                </dd>
+            </dl>
+
+            <div class="form-group mt-2">
+                <a asp-action="Index" class="sakura-btn-dark">Nazad na listu proizvoda</a>
+            </div>
+        </div>
+    </div>
+    </div>
+
+} else {
+
+<div class="container">
+    <div class="proizvod-max-container row">
+        <div class="col-sm d-flex flex-column align-items-center">
+            <div id="productCarousel" class="carousel slide w-100" data-bs-interval="false">
+                <div class="carousel-inner rounded border border-1 overflow-hidden">
+                    <div class="carousel-item active">
+                        <img src="~/img/@Html.DisplayFor(model => model.slikaPutanja)" class="d-block w-100" alt="Slide 1">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm d-flex flex-column">
+            <h2 class="stack-sans-headline-h2">
+                @Html.DisplayFor(model => model.naziv)
+            </h2>
+            <div class="wittgenstein">
+                <p>Regenerator za gustoću kose za tanku ili prorijeđenu kosu.</p>
+                <p>@Html.DisplayFor(model => model.volumen)ml</p>
+                <p>@Html.DisplayFor(model => model.cijena) KM</p>
+            </div>
+            <div class="row wittgenstein text-center">
+                <div class="col-sm">
+                    <p class="fs-5 text-shadow">Benefiti proizvoda</p>
+                        @foreach (var ps in Model.ProizvodBenefiti)
+                        {
+                                <div>
+                                    <img src="~/img/benefiti/@ps.benefit.URLSlike">
+                                    <p class="fs-6">@ps.benefit.opis</p>
+                                </div>
+                        }
+                        <!--<div>
+                        <img src="~/img/benefiti/cesalj.svg">
+                        <p class="fs-6">Raščešljava kosu</p>
+                    </div>
+                    <div>
+                        <img src="~/img/benefiti/tekstura.svg">
+                        <p class="fs-6">Poboljšava teksturu</p>
+                    </div>
+                    <div>
+                        <img src="~/img/benefiti/gusca.svg">
+                        <p class="fs-6">Gušća kosa</p>
+                    </div>-->
+                </div>
+                <div class="col-sm">
+                    <p class="fs-5 text-shadow">Ključni sastojci</p>
+                        @foreach (var ps in Model.ProizvodSastojci)
+                        {
+                                <img src="~/img/sastojci/@ps.sastojak.URLSlike">
+                                <p class="fs-6">@ps.sastojak.naziv</p>
+                        }
+                        <!--<div>
+                        <img src="~/img/sastojci/hijaluronska_kiselina.png">
+                        <p class="fs-6">Hijaluronska kiselina</p>
+                    </div>
+                    <div>
+                        <img src="~/img/sastojci/intra-cylane.png">
+                        <p class="fs-6">Intra-cylane&reg; minerali</p>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const carousel = document.getElementById('productCarousel');
+    const thumbButtons = document.querySelectorAll('#productCarouselThumbs .thumb-btn');
+    carousel.addEventListener('slid.bs.carousel', function (event) {
+    thumbButtons.forEach((btn, index) => {
+    btn.classList.toggle('active', index === event.to);
+    });
+    });
+</script>
+}

@@ -1,0 +1,30 @@
+﻿@model SakuraWeb.Models.Poruka
+
+@{
+    ViewData["Title"] = "Uređivanje newslettera";
+}
+
+<partial name="_AdminNavPartial"></partial>
+<div class="container mt-4">
+    <div class="text-center">
+        <h1 class="text-center admin-panel-heading">Newsletter</h1>
+    </div>
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div style="max-width:80%" class="d-flex align-items-center flex-column mx-auto wittgenstein">
+            <input type="text" class="form-control mb-3" placeholder="Naslov..." style="width:80%" asp-for="naziv">
+            <p><span asp-validation-for="naziv" class="text-danger"></span></p>
+            <textarea class="form-control mb-3" rows="10" placeholder="Uredite sadržaj..." asp-for="tekst"></textarea>
+            <p><span asp-validation-for="tekst" class="text-danger"></span></p>
+        </div>
+        <p style="font-size:20px; color:black;">Slanje newslettera:</p>
+        <p>
+            <input type="submit" value="Potvrdi" class="sakura-btn-dark">
+        </p>
+    </form>
+    
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

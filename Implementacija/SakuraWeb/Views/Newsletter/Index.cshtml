@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SakuraWeb.Models.Poruka>
+
+@{
+    ViewData["Title"] = "Ranije poslane poruke";
+}
+
+<partial name="_AdminNavPartial"></partial>
+
+<div class="shadow-lg rounded-4 p-4 w-100 sakura-lightgray-bg mb-4 mt-4">
+    <h2 class="text-center mb-4">Ranije poslane poruke</h2>
+
+    <a asp-action="Create" class="sakura-btn-dark mb-2">Pošaljite novu poruku</a>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Naslov
+                    </th>
+                    <th>
+                        Sadržaj
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.naziv)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tekst)
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+</div>
